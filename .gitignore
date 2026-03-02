@@ -26,6 +26,9 @@ npm-debug.log*
 # vercel
 .vercel
 
+# original uncompressed video
+public/videos/hero-original.mp4
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
