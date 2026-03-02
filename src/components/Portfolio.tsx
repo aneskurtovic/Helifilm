@@ -16,9 +16,9 @@ export default function Portfolio() {
     target: gridRef,
     offset: ["start end", "end start"],
   });
-  // Drone flyover: grid slightly shifts perspective as you scroll
-  const gridRotateX = useTransform(scrollYProgress, [0, 0.5, 1], [3, 0, -2]);
-  const gridY = useTransform(scrollYProgress, [0, 0.5], [20, 0]);
+  // Drone flyover: grid shifts perspective as you scroll
+  const gridRotateX = useTransform(scrollYProgress, [0, 0.4, 1], [6, 0, -3]);
+  const gridY = useTransform(scrollYProgress, [0, 0.5], [40, 0]);
 
   const filters: { key: FilterCategory; label: string }[] = [
     { key: "all", label: t.portfolio.filters.all },

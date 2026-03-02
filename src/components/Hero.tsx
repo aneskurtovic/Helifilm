@@ -15,6 +15,10 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
+
+  // Drone-descend effect: video tilts forward as you scroll down (like drone diving)
+  const videoRotateX = useTransform(scrollYProgress, [0, 0.6], [0, 12]);
+  const videoScale = useTransform(scrollYProgress, [0, 0.8], [1, 1.3]);
   const { t } = useLanguage();
 
   return (
@@ -55,20 +59,29 @@ export default function Hero() {
         />
       </div>
 
-      {/* Video Background */}
-      <motion.div style={{ scale }} className="absolute inset-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
+      {/* Video Background — drone perspective dive on scroll */}
+      <div className="absolute inset-0" style={{ perspective: "1000px" }}>
+        <motion.div
+          style={{
+            rotateX: videoRotateX,
+            scale: videoScale,
+            transformOrigin: "center bottom",
+          }}
+          className="absolute inset-0"
         >
-          <source src={`${basePath}/videos/hero.mp4`} type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1a]/70 via-[#0a0f1a]/30 to-[#0a0f1a]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1a]/40 via-transparent to-[#0a0f1a]/40" />
-      </motion.div>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={`${basePath}/videos/hero.mp4`} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1a]/70 via-[#0a0f1a]/30 to-[#0a0f1a]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1a]/40 via-transparent to-[#0a0f1a]/40" />
+        </motion.div>
+      </div>
 
       {/* Content */}
       <motion.div

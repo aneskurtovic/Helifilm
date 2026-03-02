@@ -43,11 +43,11 @@ export default function About() {
     offset: ["start end", "end start"],
   });
 
-  // Drone-view perspective: subtle tilt + lift as you scroll into view
-  const rotateX = useTransform(scrollYProgress, [0, 0.3, 0.5], [8, 2, 0]);
-  const rotateY = useTransform(scrollYProgress, [0, 0.3, 0.5], [-6, -1, 0]);
-  const imgScale = useTransform(scrollYProgress, [0, 0.4], [1.1, 1]);
-  const imgY = useTransform(scrollYProgress, [0, 0.5], [40, 0]);
+  // Drone-view perspective: noticeable tilt + lift as you scroll into view
+  const rotateX = useTransform(scrollYProgress, [0, 0.3, 0.5], [15, 4, 0]);
+  const rotateY = useTransform(scrollYProgress, [0, 0.3, 0.5], [-10, -2, 0]);
+  const imgScale = useTransform(scrollYProgress, [0, 0.4], [1.15, 1]);
+  const imgY = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
 
   const stats = [
     { value: 11, suffix: "+", label: t.about.stats.years },
