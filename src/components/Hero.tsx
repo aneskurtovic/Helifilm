@@ -112,12 +112,7 @@ export default function Hero() {
         className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4"
       >
         {/* Bosnian lily / logo mark */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5, y: -40 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
-          className="mb-6"
-        >
+        <div className="mb-6">
           <div className="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-[#D4A418]/50 flex items-center justify-center backdrop-blur-sm bg-[#1e3a8a]/10">
             {/* Stylized Bosnian lily / fleur-de-lis */}
             <svg viewBox="0 0 100 100" fill="none" className="w-10 h-10">
@@ -140,32 +135,17 @@ export default function Hero() {
               <rect x="35" y="80" width="30" height="4" rx="2" fill="#D4A418" opacity="0.5" />
             </svg>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.5 }}
-          className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-wider text-white mb-4"
-        >
+        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-wider text-white mb-4">
           HELI<span className="text-[#D4A418]">FILM</span>
-        </motion.h1>
+        </h1>
 
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.6, delay: 1.8 }}
-          className="h-0.5 w-24 bg-gradient-to-r from-transparent via-[#D4A418] to-transparent mb-6"
-        />
+        <div className="h-0.5 w-24 bg-gradient-to-r from-transparent via-[#D4A418] to-transparent mb-6" />
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.9 }}
-          className="text-lg sm:text-xl lg:text-2xl text-gray-300 font-light tracking-wide max-w-2xl"
-        >
+        <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 font-light tracking-wide max-w-2xl">
           {t.hero.tagline}
-        </motion.p>
+        </p>
 
         <motion.a
           href="#portfolio"
@@ -173,9 +153,6 @@ export default function Hero() {
             e.preventDefault();
             document.querySelector("#portfolio")?.scrollIntoView({ behavior: "smooth" });
           }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 2.1 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="mt-10 px-8 py-3 border-2 border-[#D4A418] text-[#D4A418] rounded-full font-medium tracking-wide hover:bg-[#D4A418] hover:text-black transition-all duration-300 backdrop-blur-sm"
@@ -184,12 +161,7 @@ export default function Hero() {
         </motion.a>
 
         {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.5, duration: 0.8 }}
-          className="absolute bottom-10 hidden sm:flex flex-col items-center gap-2"
-        >
+        <div className="absolute bottom-10 hidden sm:flex flex-col items-center gap-2">
           <span className="text-xs text-gray-400 tracking-widest uppercase">
             {t.hero.scrollDown}
           </span>
@@ -200,7 +172,7 @@ export default function Hero() {
           >
             <div className="w-1 h-2 rounded-full bg-[#D4A418]/60" />
           </motion.div>
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   );
