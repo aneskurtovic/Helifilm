@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
+import { basePath } from "@/lib/config";
 
 function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -56,26 +57,15 @@ export default function About() {
           transition={{ duration: 0.6 }}
           className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center"
         >
-          {/* Styled placeholder image */}
+          {/* Owner photo */}
           <div className="relative overflow-hidden">
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 relative bg-gradient-to-br from-[#111827] to-[#0d1525]">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a8a]/15 via-transparent to-[#D4A418]/10" />
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-                <div className="w-24 h-24 rounded-full border-2 border-[#D4A418]/20 flex items-center justify-center bg-white/[0.02]">
-                  <svg viewBox="0 0 100 100" fill="none" className="w-12 h-12 opacity-40">
-                    <path d="M50 10 C50 10 42 25 42 35 C42 42 46 46 50 48 C54 46 58 42 58 35 C58 25 50 10 50 10Z" fill="#D4A418" />
-                    <path d="M25 55 C25 55 35 42 42 40 C48 38 50 42 50 48 C46 52 40 54 35 52 C28 50 25 55 25 55Z" fill="#D4A418" />
-                    <path d="M75 55 C75 55 65 42 58 40 C52 38 50 42 50 48 C54 52 60 54 65 52 C72 50 75 55 75 55Z" fill="#D4A418" />
-                    <rect x="47" y="48" width="6" height="30" rx="3" fill="#D4A418" opacity="0.7" />
-                  </svg>
-                </div>
-                <span className="text-white/20 text-sm tracking-wider uppercase">Hajrudin Suljic</span>
-              </div>
-              <div className="absolute inset-0 opacity-5"
-                style={{
-                  backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)',
-                }}
+            <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 relative">
+              <img
+                src={`${basePath}/images/owner.jpg`}
+                alt="Hajrudin Suljic - Helifilm"
+                className="w-full h-full object-cover"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a]/40 via-transparent to-transparent" />
             </div>
             <div className="absolute -bottom-4 -right-4 w-full h-full rounded-2xl border-2 border-[#D4A418]/20 -z-10" />
           </div>
