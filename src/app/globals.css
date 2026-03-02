@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0f1a;
+  --foreground: #ffffff;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1e3a5f #0a0f1a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0f1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e3a5f;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Select dropdown dark styling */
+select {
+  color: #9ca3af;
+}
+select:has(option:checked:not([value=""])) {
+  color: #ffffff;
+}
+select option {
+  background: #111827;
+  color: #fff;
+}
+select option[value=""] {
+  color: #6b7280;
+}
+
+/* Animated gradient for hero background */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Subtle glow effect for section dividers */
+@layer utilities {
+  .glow-line {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 164, 24, 0.3),
+      transparent
+    );
+    height: 1px;
+  }
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s ease;
+}
