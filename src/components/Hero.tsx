@@ -152,7 +152,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="absolute bottom-10 flex flex-col items-center gap-2"
+          className="absolute bottom-10 hidden sm:flex flex-col items-center gap-2"
         >
           <span className="text-xs text-gray-400 tracking-widest uppercase">
             {t.hero.scrollDown}

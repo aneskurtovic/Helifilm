@@ -45,7 +45,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="relative py-24 lg:py-32 bg-[#0a0f1a]">
+    <section id="about" className="relative py-24 lg:py-32 bg-[#0a0f1a] overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#1e3a8a]/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -57,7 +57,7 @@ export default function About() {
           className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center"
         >
           {/* Styled placeholder image */}
-          <div className="relative">
+          <div className="relative overflow-hidden">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 relative bg-gradient-to-br from-[#111827] to-[#0d1525]">
               <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a8a]/15 via-transparent to-[#D4A418]/10" />
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
@@ -82,7 +82,7 @@ export default function About() {
 
           {/* Text Content */}
           <div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
               {t.about.title}
             </h2>
             <div className="h-1 w-16 bg-[#D4A418] mb-8 rounded-full" />
@@ -96,7 +96,7 @@ export default function About() {
         </motion.div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-20">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 mt-20">
           {stats.map((stat, i) => (
             <motion.div
               key={i}
@@ -104,9 +104,9 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="text-center p-6 rounded-2xl bg-white/[0.03] border border-[#1e3a8a]/20 hover:border-[#D4A418]/20 transition-colors duration-300"
+              className="text-center p-4 sm:p-6 rounded-2xl bg-white/[0.03] border border-[#1e3a8a]/20 hover:border-[#D4A418]/20 transition-colors duration-300"
             >
-              <div className="text-4xl lg:text-5xl font-bold text-[#D4A418] mb-2">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#D4A418] mb-2">
                 <AnimatedCounter target={stat.value} suffix={stat.suffix} />
               </div>
               <div className="text-sm text-gray-400 uppercase tracking-wider">{stat.label}</div>

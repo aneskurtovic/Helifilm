@@ -38,7 +38,7 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" className="relative py-24 lg:py-32 bg-[#111827]">
+    <section id="contact" className="relative py-24 lg:py-32 bg-[#111827] overflow-hidden">
       <div className="absolute bottom-0 left-1/3 w-[500px] h-[500px] bg-[#1e3a8a]/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -49,7 +49,7 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
             {t.contact.title}
           </h2>
           <div className="h-1 w-16 bg-[#D4A418] mx-auto mb-6 rounded-full" />
@@ -61,8 +61,8 @@ export default function Contact() {
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <motion.form
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             onSubmit={handleSubmit}
@@ -115,8 +115,8 @@ export default function Contact() {
 
           {/* Contact Info */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="space-y-8"

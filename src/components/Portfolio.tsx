@@ -26,7 +26,7 @@ export default function Portfolio() {
       : portfolioItems.filter((item) => item.category === activeFilter);
 
   return (
-    <section id="portfolio" className="relative py-24 lg:py-32 bg-[#0a0f1a]">
+    <section id="portfolio" className="relative py-24 lg:py-32 bg-[#0a0f1a] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <motion.div
@@ -36,7 +36,7 @@ export default function Portfolio() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
             {t.portfolio.title}
           </h2>
           <div className="h-1 w-16 bg-[#D4A418] mx-auto mb-6 rounded-full" />
@@ -72,7 +72,7 @@ export default function Portfolio() {
             <button
               key={filter.key}
               onClick={() => setActiveFilter(filter.key)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
                 activeFilter === filter.key
                   ? "bg-[#D4A418] text-black"
                   : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-[#1e3a8a]/20"
@@ -171,7 +171,8 @@ export default function Portfolio() {
             </motion.div>
             <button
               onClick={() => setLightbox(null)}
-              className="absolute top-6 right-6 text-white/70 hover:text-white text-4xl"
+              className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:text-white hover:bg-white/20 text-2xl transition-colors"
+              aria-label="Close"
             >
               &times;
             </button>

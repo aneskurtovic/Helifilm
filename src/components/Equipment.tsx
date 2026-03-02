@@ -15,7 +15,7 @@ export default function Equipment() {
   const { language, t } = useLanguage();
 
   return (
-    <section id="equipment" className="relative py-24 lg:py-32 bg-[#111827]">
+    <section id="equipment" className="relative py-24 lg:py-32 bg-[#111827] overflow-hidden">
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[#1e3a8a]/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/2" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -26,7 +26,7 @@ export default function Equipment() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
             {t.equipment.title}
           </h2>
           <div className="h-1 w-16 bg-[#D4A418] mx-auto mb-6 rounded-full" />
