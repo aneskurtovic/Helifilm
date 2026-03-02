@@ -1,12 +1,13 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, animate } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { basePath } from "@/lib/config";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
+  const [introComplete, setIntroComplete] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -15,10 +16,31 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
-  // Drone-descend on scroll: camera tilts forward and zooms as you leave the hero
-  const videoRotateX = useTransform(scrollYProgress, [0, 0.7], [0, 18]);
-  const videoScale = useTransform(scrollYProgress, [0, 0.7], [1, 1.4]);
-  const videoY = useTransform(scrollYProgress, [0, 0.7], [0, -80]);
+  // Intro drone-descend: animated on mount, then hands off to scroll
+  const introRotateX = useMotionValue(14);
+  const introScale = useMotionValue(1.35);
+  const smoothRotateX = useSpring(introRotateX, { stiffness: 40, damping: 20 });
+  const smoothScale = useSpring(introScale, { stiffness: 40, damping: 20 });
+
+  // Scroll-linked transforms (only after intro finishes)
+  const scrollRotateX = useTransform(scrollYProgress, [0, 0.7], [0, 18]);
+  const scrollScale = useTransform(scrollYProgress, [0, 0.7], [1, 1.4]);
+  const scrollY = useTransform(scrollYProgress, [0, 0.7], [0, -80]);
+
+  // Final combined values
+  const finalRotateX = introComplete ? scrollRotateX : smoothRotateX;
+  const finalScale = introComplete ? scrollScale : smoothScale;
+
+  useEffect(() => {
+    // Animate from tilted/zoomed to level
+    animate(introRotateX, 0, { duration: 2.5, ease: [0.25, 0.1, 0.25, 1] });
+    animate(introScale, 1, {
+      duration: 2.5,
+      ease: [0.25, 0.1, 0.25, 1],
+      onComplete: () => setIntroComplete(true),
+    });
+  }, [introRotateX, introScale]);
+
   const { t } = useLanguage();
 
   return (
@@ -59,16 +81,13 @@ export default function Hero() {
         />
       </div>
 
-      {/* Video Background — drone descend: starts level, tilts + zooms + lifts on scroll */}
+      {/* Video Background — drone descend intro + scroll dive */}
       <div className="absolute inset-0" style={{ perspective: "800px" }}>
         <motion.div
-          initial={{ rotateX: 12, scale: 1.3 }}
-          animate={{ rotateX: 0, scale: 1 }}
-          transition={{ duration: 2.5, ease: [0.25, 0.1, 0.25, 1] }}
           style={{
-            rotateX: videoRotateX,
-            scale: videoScale,
-            y: videoY,
+            rotateX: finalRotateX,
+            scale: finalScale,
+            y: introComplete ? scrollY : 0,
             transformOrigin: "center bottom",
           }}
           className="absolute inset-0"
