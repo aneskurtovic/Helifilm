@@ -1,13 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "img.youtube.com",
-      },
-    ],
+    unoptimized: true,
   },
+  basePath: process.env.PAGES_BASE_PATH || "",
 };
 
 export default nextConfig;
