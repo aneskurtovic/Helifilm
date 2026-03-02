@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { basePath } from "@/lib/config";
@@ -37,6 +37,17 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
 
 export default function About() {
   const { t } = useLanguage();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Drone-view perspective: subtle tilt + lift as you scroll into view
+  const rotateX = useTransform(scrollYProgress, [0, 0.3, 0.5], [8, 2, 0]);
+  const rotateY = useTransform(scrollYProgress, [0, 0.3, 0.5], [-6, -1, 0]);
+  const imgScale = useTransform(scrollYProgress, [0, 0.4], [1.1, 1]);
+  const imgY = useTransform(scrollYProgress, [0, 0.5], [40, 0]);
 
   const stats = [
     { value: 11, suffix: "+", label: t.about.stats.years },
@@ -46,7 +57,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="relative py-24 lg:py-32 bg-[#0a0f1a] overflow-hidden">
+    <section id="about" ref={sectionRef} className="relative py-24 lg:py-32 bg-[#0a0f1a] overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#1e3a8a]/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -57,18 +68,32 @@ export default function About() {
           transition={{ duration: 0.6 }}
           className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center"
         >
-          {/* Owner photo */}
-          <div className="relative overflow-hidden">
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 relative">
+          {/* Owner photo — drone perspective tilt on scroll */}
+          <motion.div
+            className="relative overflow-hidden"
+            style={{
+              perspective: 800,
+            }}
+          >
+            <motion.div
+              className="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 relative"
+              style={{
+                rotateX,
+                rotateY,
+                scale: imgScale,
+                y: imgY,
+                transformOrigin: "center center",
+              }}
+            >
               <img
                 src={`${basePath}/images/owner.jpg`}
                 alt="Hajrudin Suljic - Helifilm"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a]/40 via-transparent to-transparent" />
-            </div>
+            </motion.div>
             <div className="absolute -bottom-4 -right-4 w-full h-full rounded-2xl border-2 border-[#D4A418]/20 -z-10" />
-          </div>
+          </motion.div>
 
           {/* Text Content */}
           <div>

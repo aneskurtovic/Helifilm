@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useState, useRef } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { portfolioItems, getYoutubeThumbnail } from "@/data/portfolio";
 
@@ -11,6 +11,14 @@ export default function Portfolio() {
   const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<FilterCategory>("all");
   const [lightbox, setLightbox] = useState<string | null>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: gridRef,
+    offset: ["start end", "end start"],
+  });
+  // Drone flyover: grid slightly shifts perspective as you scroll
+  const gridRotateX = useTransform(scrollYProgress, [0, 0.5, 1], [3, 0, -2]);
+  const gridY = useTransform(scrollYProgress, [0, 0.5], [20, 0]);
 
   const filters: { key: FilterCategory; label: string }[] = [
     { key: "all", label: t.portfolio.filters.all },
@@ -83,8 +91,17 @@ export default function Portfolio() {
           ))}
         </div>
 
-        {/* Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* Grid — drone flyover perspective */}
+        <motion.div
+          ref={gridRef}
+          className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          style={{
+            perspective: 1200,
+            rotateX: gridRotateX,
+            y: gridY,
+            transformOrigin: "center top",
+          }}
+        >
           <AnimatePresence mode="popLayout">
             {filtered.map((item, i) => (
               <motion.div
@@ -120,7 +137,7 @@ export default function Portfolio() {
               </motion.div>
             ))}
           </AnimatePresence>
-        </div>
+        </motion.div>
 
         {/* View All CTA */}
         <motion.div
