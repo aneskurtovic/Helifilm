@@ -17,7 +17,15 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Helifilm Produkcija — Aerial Cinematography & Video Production",
   description:
-    "Professional drone videography and aerial cinematography based in Sarajevo, Bosnia & Herzegovina. Cinematic drone filming for film, real estate, events, and commercial projects since 2013.",
+    "Professional drone videography and aerial cinematography in Sarajevo, Bosnia. Cinematic filming for film, real estate, events since 2013.",
+  icons: {
+    icon: [
+      { url: "/Helifilm/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/Helifilm/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/Helifilm/apple-touch-icon.png",
+  },
+  manifest: "/Helifilm/site.webmanifest",
   keywords: [
     "drone videography",
     "aerial cinematography",
@@ -34,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Helifilm Produkcija — Aerial Cinematography & Video Production",
     description:
-      "Professional drone videography and aerial cinematography based in Sarajevo, Bosnia & Herzegovina.",
+      "Professional drone videography and aerial cinematography in Sarajevo, Bosnia.",
     type: "website",
     url: "https://www.helifilm.ba",
     siteName: "Helifilm Produkcija",
