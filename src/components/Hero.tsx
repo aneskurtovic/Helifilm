@@ -1,46 +1,20 @@
 "use client";
 
-import { motion, useScroll, useTransform, useMotionValue, useSpring, animate } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { basePath } from "@/lib/config";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
-  const [introComplete, setIntroComplete] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
-
-  // Intro drone-descend: animated on mount, then hands off to scroll
-  const introRotateX = useMotionValue(14);
-  const introScale = useMotionValue(1.35);
-  const smoothRotateX = useSpring(introRotateX, { stiffness: 40, damping: 20 });
-  const smoothScale = useSpring(introScale, { stiffness: 40, damping: 20 });
-
-  // Scroll-linked transforms (only after intro finishes)
-  const scrollRotateX = useTransform(scrollYProgress, [0, 0.7], [0, 18]);
-  const scrollScale = useTransform(scrollYProgress, [0, 0.7], [1, 1.4]);
-  const scrollY = useTransform(scrollYProgress, [0, 0.7], [0, -80]);
-
-  // Final combined values
-  const finalRotateX = introComplete ? scrollRotateX : smoothRotateX;
-  const finalScale = introComplete ? scrollScale : smoothScale;
-
-  useEffect(() => {
-    // Animate from tilted/zoomed to level
-    animate(introRotateX, 0, { duration: 2.5, ease: [0.25, 0.1, 0.25, 1] });
-    animate(introScale, 1, {
-      duration: 2.5,
-      ease: [0.25, 0.1, 0.25, 1],
-      onComplete: () => setIntroComplete(true),
-    });
-  }, [introRotateX, introScale]);
-
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
   const { t } = useLanguage();
 
   return (
@@ -81,40 +55,32 @@ export default function Hero() {
         />
       </div>
 
-      {/* Video Background — drone descend intro + scroll dive */}
-      <div className="absolute inset-0" style={{ perspective: "800px" }}>
-        <motion.div
-          style={{
-            rotateX: finalRotateX,
-            scale: finalScale,
-            y: introComplete ? scrollY : 0,
-            transformOrigin: "center bottom",
-          }}
-          className="absolute inset-0"
-        >
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source src={`${basePath}/videos/hero.mp4`} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1a]/70 via-[#0a0f1a]/30 to-[#0a0f1a]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1a]/40 via-transparent to-[#0a0f1a]/40" />
-        </motion.div>
-      </div>
-
-      {/* Content — fades in after drone descend */}
+      {/* Video Background — CSS drone-descend on load + gentle scroll zoom */}
       <motion.div
-        style={{ opacity, y }}
+        style={{ scale: videoScale }}
+        className="absolute inset-0 origin-center animate-drone-descend"
+      >
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src={`${basePath}/videos/hero.mp4`} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1a]/70 via-[#0a0f1a]/30 to-[#0a0f1a]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1a]/40 via-transparent to-[#0a0f1a]/40" />
+      </motion.div>
+
+      {/* Content */}
+      <motion.div
+        style={{ opacity, y: contentY }}
         className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4"
       >
         {/* Bosnian lily / logo mark */}
         <div className="mb-6">
           <div className="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-[#D4A418]/50 flex items-center justify-center backdrop-blur-sm bg-[#1e3a8a]/10">
-            {/* Stylized Bosnian lily / fleur-de-lis */}
             <svg viewBox="0 0 100 100" fill="none" className="w-10 h-10">
               <path
                 d="M50 10 C50 10 42 25 42 35 C42 42 46 46 50 48 C54 46 58 42 58 35 C58 25 50 10 50 10Z"
