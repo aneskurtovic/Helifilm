@@ -20,6 +20,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const saved = localStorage.getItem("helifilm-lang") as Language;
     if (saved && (saved === "en" || saved === "bs")) {
       setLanguageState(saved);
+    } else {
+      // Auto-detect from browser language: bs/hr/sr → Bosnian, else English
+      const browserLang = navigator.language?.toLowerCase() || "";
+      if (browserLang.startsWith("bs") || browserLang.startsWith("hr") || browserLang.startsWith("sr")) {
+        setLanguageState("bs");
+      }
     }
   }, []);
 
