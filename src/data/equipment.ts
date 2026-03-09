@@ -34,7 +34,7 @@ export const equipment: Equipment[] = [
     id: "3",
     name: "DJI FPV Drone",
     image: "/images/equipment-3.jpg",
-    specs: ["4K/120fps", "150km/h Speed", "Immersive FPV", "Emergency Brake"],
+    specs: ["4K/120fps", "150 km/h Speed", "Immersive FPV", "Emergency Brake"],
     description: {
       en: "High-speed cinematic FPV drone for dynamic, immersive shots that push creative boundaries.",
       bs: "Brzi kinematski FPV dron za dinamične, imerzivne snimke koji pomiču granice kreativnosti.",

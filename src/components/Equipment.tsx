@@ -1,15 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { equipment } from "@/data/equipment";
-
-const droneIcons = [
-  "M12 2L2 7l10 5 10-5-10-5z M2 17l10 5 10-5 M2 12l10 5 10-5",
-  "M12 8a4 4 0 100 8 4 4 0 000-8z M12 2v2 M12 20v2 M4.93 4.93l1.41 1.41 M17.66 17.66l1.41 1.41 M2 12h2 M20 12h2 M4.93 19.07l1.41-1.41 M17.66 6.34l1.41-1.41",
-  "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
-  "M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z M12 17a4 4 0 100-8 4 4 0 000 8z",
-];
+import { basePath } from "@/lib/config";
 
 export default function Equipment() {
   const { language, t } = useLanguage();
@@ -46,30 +41,15 @@ export default function Equipment() {
               whileHover={{ y: -4 }}
               className="group rounded-2xl overflow-hidden bg-white/[0.03] border border-[#1e3a8a]/20 hover:border-[#D4A418]/20 transition-all duration-300"
             >
-              <div className="aspect-[16/9] relative overflow-hidden bg-gradient-to-br from-[#0d1525] to-[#0a0f1a]">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a8a]/10 to-[#D4A418]/5" />
-                <div className="absolute inset-0 opacity-[0.04]"
-                  style={{
-                    backgroundImage: `linear-gradient(rgba(30,58,138,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(30,58,138,0.5) 1px, transparent 1px)`,
-                    backgroundSize: '40px 40px',
-                  }}
+              <div className="aspect-[16/9] relative overflow-hidden bg-[#0a0f1a]">
+                <Image
+                  src={`${basePath}${item.image}`}
+                  alt={item.name}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#D4A418"
-                      strokeWidth="1"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-16 h-16 mx-auto opacity-30 group-hover:opacity-50 transition-opacity duration-300"
-                    >
-                      <path d={droneIcons[i]} />
-                    </svg>
-                    <span className="text-white/15 text-xs tracking-[0.3em] uppercase mt-3 block">{item.name}</span>
-                  </div>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               </div>
               <div className="p-6">
                 <h3 className="text-2xl font-bold text-white mb-3">{item.name}</h3>

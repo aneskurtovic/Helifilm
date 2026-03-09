@@ -27,7 +27,13 @@
       "Bash(mv:*)",
       "Bash(magick:*)",
       "Bash(node:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "WebFetch(domain:store.dji.com)",
+      "Bash(ls:*)",
+      "WebFetch(domain:www.dji.com)",
+      "Bash(npm run:*)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_install"
     ]
   }
 }
