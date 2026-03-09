@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.facebook.com)",
+      "WebFetch(domain:www.youtube.com)",
+      "WebSearch",
+      "WebFetch(domain:ba.linkedin.com)",
+      "WebFetch(domain:www.imdb.com)",
+      "WebFetch(domain:www.skyecam.com)",
+      "WebFetch(domain:la-drones.com)",
+      "Bash(cp:*)",
+      "Bash(npm install:*)",
+      "Bash(mkdir:*)",
+      "Bash(npx next:*)",
+      "Bash(rm:*)",
+      "Bash(pkill:*)",
+      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npx next:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(curl:*)",
+      "Bash(gh auth:*)",
+      "Bash(git:*)",
+      "Bash(winget install:*)",
+      "Bash(export:*)",
+      "Bash(PAGES_BASE_PATH=/Helifilm NODE_OPTIONS=\"--max-old-space-size=4096\" npx next:*)",
+      "Bash(ffprobe:*)",
+      "Bash(ffmpeg:*)",
+      "Bash(mv:*)",
+      "Bash(magick:*)",
+      "Bash(node:*)",
+      "Bash(npm uninstall:*)"
+    ]
+  }
+}
