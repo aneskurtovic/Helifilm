@@ -1,29 +1,33 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
+import TrustStrip from "@/components/TrustStrip";
 import Services from "@/components/Services";
 import Portfolio from "@/components/Portfolio";
+import Process from "@/components/Process";
 import Equipment from "@/components/Equipment";
 import Testimonials from "@/components/Testimonials";
+import About from "@/components/About";
+import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
-
 export default function Home() {
   return (
     <main>
       <Navbar />
       <Hero />
-      <About />
+      <TrustStrip />
       <Services />
       <Portfolio />
+      <Process />
       <Equipment />
       <Testimonials />
+      <About />
+      <FAQ />
       <Contact />
       <Footer />
       <BackToTop />
 
-      {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -32,7 +36,7 @@ export default function Home() {
             "@type": "LocalBusiness",
             name: "Helifilm Produkcija",
             description:
-              "Professional drone videography and aerial cinematography based in Sarajevo, Bosnia & Herzegovina.",
+              "Aerial production for Balkan film, tourism, and property. Sarajevo-based, shooting since 2013.",
             url: "https://www.helifilm.ba",
             telephone: "+38761288221",
             email: "info@helifilm.ba",

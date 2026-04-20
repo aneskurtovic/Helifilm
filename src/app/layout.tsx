@@ -1,26 +1,34 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter_Tight, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
-import { basePath } from "@/lib/config";
 
-const inter = Inter({
+const interTight = Inter_Tight({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
 });
 
-const montserrat = Montserrat({
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-montserrat",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-heading",
+  display: "swap",
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
 });
 
 const bp = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export const metadata: Metadata = {
-  title: "Helifilm Produkcija — Aerial Cinematography & Video Production",
+  title: "Helifilm Produkcija — Aerial Production for Balkan Film, Tourism & Property",
   description:
-    "Professional drone videography and aerial cinematography in Sarajevo, Bosnia. Cinematic filming for film, real estate, events since 2013.",
+    "Sarajevo-based aerial cinematography studio, shooting across the Balkans since 2013. Film-rated drone kit, licensed operators, broadcast-grade delivery.",
   icons: {
     icon: [
       { url: `${bp}/favicon-32x32.png`, sizes: "32x32", type: "image/png" },
@@ -35,17 +43,18 @@ export const metadata: Metadata = {
     "Sarajevo",
     "Bosnia",
     "Helifilm",
-    "drone filming",
-    "video production",
-    "dron snimanje",
-    "aerijalna kinematografija",
+    "aerial production Balkans",
+    "film TV drone operator",
+    "tourism video Bosnia",
+    "aerial real estate",
     "snimanje dronom Sarajevo",
+    "aerijalna kinematografija",
   ],
   metadataBase: new URL("https://www.helifilm.ba"),
   openGraph: {
-    title: "Helifilm Produkcija — Aerial Cinematography & Video Production",
+    title: "Helifilm Produkcija — Aerial Production for Balkan Film, Tourism & Property",
     description:
-      "Professional drone videography and aerial cinematography in Sarajevo, Bosnia.",
+      "Sarajevo-based aerial cinematography studio. Film-rated kit. Shooting across the Balkans since 2013.",
     type: "website",
     url: "https://www.helifilm.ba",
     siteName: "Helifilm Produkcija",
@@ -55,7 +64,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Helifilm Produkcija — Aerial Cinematography",
-    description: "Professional drone videography based in Sarajevo, Bosnia & Herzegovina.",
+    description: "Aerial production for Balkan film, tourism, and property.",
   },
   robots: {
     index: true,
@@ -73,10 +82,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <head>
-        <link rel="preload" href={`${basePath}/images/hero-poster.jpg`} as="image" />
-      </head>
-      <body className={`${inter.variable} ${montserrat.variable} font-sans antialiased bg-[#0a0f1a] text-white`}>
+      <body className={`${interTight.variable} ${instrumentSerif.variable} ${jetBrainsMono.variable} font-sans antialiased bg-[#0a0a0c] text-white`}>
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>

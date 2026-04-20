@@ -1,199 +1,182 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 
-const navLinks = [
-  { key: "home", href: "#home" },
-  { key: "about", href: "#about" },
-  { key: "services", href: "#services" },
-  { key: "portfolio", href: "#portfolio" },
-  { key: "equipment", href: "#equipment" },
-  { key: "testimonials", href: "#testimonials" },
-  { key: "contact", href: "#contact" },
+const items = [
+  { key: "work", href: "#work", label: "Work" },
+  { key: "services", href: "#services", label: "Services" },
+  { key: "about", href: "#about", label: "Studio" },
+  { key: "equipment", href: "#equipment", label: "Equipment" },
+  { key: "contact", href: "#contact", label: "Contact" },
 ] as const;
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
+  const [open, setOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-
-      const sections = navLinks.map((link) => link.href.slice(1));
-      let current = "home";
-      for (const id of sections) {
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 120) {
-            current = id;
-          }
-        }
-      }
-      setActiveSection(current);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const go = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    setMobileOpen(false);
-    const el = document.querySelector(href);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    setOpen(false);
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const labels: Record<string, string> = {
+    work: t.nav.work,
+    services: t.nav.services,
+    about: t.nav.about,
+    equipment: t.nav.equipment,
+    contact: t.nav.contact,
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-[background,padding,border-color] duration-300 border-b ${
         scrolled
-          ? "bg-[#0a0f1a]/95 backdrop-blur-md shadow-lg shadow-black/20"
-          : "bg-transparent"
+          ? "bg-bg/85 backdrop-blur-xl border-line py-3"
+          : "bg-transparent border-transparent py-5"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
-          <a
-            href="#home"
-            onClick={(e) => handleNavClick(e, "#home")}
-            className="flex items-center gap-2"
-          >
-            <span className="text-2xl font-bold tracking-wider text-white">
-              HELI<span className="text-[#D4A418]">FILM</span>
-            </span>
-          </a>
+      <a
+        href="#home"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[200] focus:bg-accent focus:text-bg focus:px-4 focus:py-2 focus:rounded-full focus:text-sm"
+      >
+        Skip to content
+      </a>
+      <div className="section-frame grid grid-cols-[auto_1fr_auto] items-center gap-10 pad-x">
+        <a
+          href="#home"
+          onClick={(e) => go(e, "#home")}
+          className="flex items-center gap-2.5"
+          aria-label="Helifilm"
+        >
+          <span className="w-2 h-2 rounded-full bg-accent" />
+          <span className="mono text-[11px] font-semibold tracking-[0.32em] text-fg">
+            H E L I F I L M
+          </span>
+        </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.key}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className={`relative text-sm font-medium transition-colors duration-200 ${
-                  activeSection === link.href.slice(1)
-                    ? "text-[#D4A418]"
-                    : "text-gray-300 hover:text-[#D4A418]"
-                }`}
-              >
-                {t.nav[link.key]}
-                {activeSection === link.href.slice(1) && (
-                  <motion.div
-                    layoutId="activeNav"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#D4A418] rounded-full"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  />
-                )}
-              </a>
-            ))}
+        <nav className="hidden lg:flex justify-center gap-7" aria-label="Primary">
+          {items.map((it, i) => (
+            <a
+              key={it.key}
+              href={it.href}
+              onClick={(e) => go(e, it.href)}
+              className="group flex items-baseline gap-1.5 text-fg-dim hover:text-fg transition-colors text-[11px] uppercase tracking-[0.14em]"
+            >
+              <span className="mono text-[9px] text-fg-mute">0{i + 1}</span>
+              <span>{labels[it.key]}</span>
+            </a>
+          ))}
+        </nav>
 
-            {/* Language Toggle */}
-            <div className="flex items-center gap-1 ml-4 rounded-full border border-white/20 p-0.5">
-              <button
-                onClick={() => setLanguage("en")}
-                className={`px-3 py-1 text-xs font-semibold rounded-full transition-all duration-200 ${
-                  language === "en"
-                    ? "bg-[#D4A418] text-black"
-                    : "text-gray-400 hover:text-white"
-                }`}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => setLanguage("bs")}
-                className={`px-3 py-1 text-xs font-semibold rounded-full transition-all duration-200 ${
-                  language === "bs"
-                    ? "bg-[#D4A418] text-black"
-                    : "text-gray-400 hover:text-white"
-                }`}
-              >
-                BS
-              </button>
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-2 mono text-[10px] tracking-[0.08em] text-fg-dim">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent pulse-dot" />
+            <span>{t.nav.booking}</span>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden flex flex-col gap-1.5 p-3 min-h-[44px] min-w-[44px] items-center justify-center"
-            aria-label="Toggle menu"
+          <a
+            href="#contact"
+            onClick={(e) => go(e, "#contact")}
+            className="hidden lg:inline-flex items-center gap-2 rounded-full border border-line-2 px-4 py-3 text-[11px] uppercase tracking-[0.14em] text-fg hover:bg-fg hover:text-bg hover:border-fg transition-colors"
           >
-            <motion.span
-              animate={mobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-              className="block w-6 h-0.5 bg-white"
-            />
-            <motion.span
-              animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="block w-6 h-0.5 bg-white"
-            />
-            <motion.span
-              animate={mobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-              className="block w-6 h-0.5 bg-white"
-            />
+            {t.nav.startProject}
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" strokeWidth="1.2" />
+            </svg>
+          </a>
+
+          <div className="hidden lg:flex items-center mono text-[10px] tracking-[0.2em] text-fg-mute">
+            <button
+              onClick={() => setLanguage("en")}
+              className={`px-2 py-2 min-h-[44px] ${language === "en" ? "text-accent" : "hover:text-fg"}`}
+              aria-label="Switch to English"
+              aria-pressed={language === "en"}
+            >
+              EN
+            </button>
+            <span className="mx-0.5">/</span>
+            <button
+              onClick={() => setLanguage("bs")}
+              className={`px-2 py-2 min-h-[44px] ${language === "bs" ? "text-accent" : "hover:text-fg"}`}
+              aria-label="Switch to Bosanski"
+              aria-pressed={language === "bs"}
+            >
+              BS
+            </button>
+          </div>
+
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="lg:hidden flex flex-col gap-1 p-3 min-h-[44px] min-w-[44px] items-center justify-center"
+            aria-label="Menu"
+            aria-expanded={open}
+          >
+            <span className="block w-5 h-px bg-fg" />
+            <span className="block w-5 h-px bg-fg" />
+            <span className="block w-5 h-px bg-fg" />
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
-        {mobileOpen && (
+        {open && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="lg:hidden bg-[#0a0f1a]/98 backdrop-blur-lg border-t border-white/10"
+            className="lg:hidden overflow-hidden bg-bg-2 border-t border-line"
           >
-            <div className="px-4 py-6 flex flex-col gap-4">
-              {navLinks.map((link) => (
+            <div className="flex flex-col gap-3 pad-x py-5">
+              {items.map((it) => (
                 <a
-                  key={link.key}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className={`text-base font-medium transition-colors py-2 ${
-                    activeSection === link.href.slice(1)
-                      ? "text-[#D4A418]"
-                      : "text-gray-300 hover:text-[#D4A418]"
-                  }`}
+                  key={it.key}
+                  href={it.href}
+                  onClick={(e) => go(e, it.href)}
+                  className="text-sm uppercase tracking-[0.14em] text-fg-dim hover:text-fg"
                 >
-                  {t.nav[link.key]}
+                  {labels[it.key]}
                 </a>
               ))}
-              <div className="flex items-center gap-2 pt-4 border-t border-white/10">
+              <a
+                href="#contact"
+                onClick={(e) => go(e, "#contact")}
+                className="mt-2 inline-flex items-center justify-center gap-2 rounded-full border border-line-2 px-4 py-3 text-[11px] uppercase tracking-[0.14em]"
+              >
+                {t.nav.startProject} →
+              </a>
+              <div className="flex items-center gap-1 pt-3 mono text-[11px] tracking-[0.2em] text-fg-dim">
                 <button
                   onClick={() => setLanguage("en")}
-                  className={`px-4 py-2 text-sm font-semibold rounded-full transition-all ${
-                    language === "en"
-                      ? "bg-[#D4A418] text-black"
-                      : "text-gray-400 border border-white/20"
-                  }`}
+                  className={`px-3 py-3 min-h-[44px] ${language === "en" ? "text-accent" : ""}`}
+                  aria-label="Switch to English"
+                  aria-pressed={language === "en"}
                 >
-                  English
+                  EN
                 </button>
+                <span>/</span>
                 <button
                   onClick={() => setLanguage("bs")}
-                  className={`px-4 py-2 text-sm font-semibold rounded-full transition-all ${
-                    language === "bs"
-                      ? "bg-[#D4A418] text-black"
-                      : "text-gray-400 border border-white/20"
-                  }`}
+                  className={`px-3 py-3 min-h-[44px] ${language === "bs" ? "text-accent" : ""}`}
+                  aria-label="Switch to Bosanski"
+                  aria-pressed={language === "bs"}
                 >
-                  Bosanski
+                  BS
                 </button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
   );
 }

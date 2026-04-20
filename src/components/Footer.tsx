@@ -1,22 +1,18 @@
 "use client";
 
+import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
+import { contactInfo } from "@/data/contact";
 
 const navLinks = [
-  { key: "home", href: "#home" },
-  { key: "about", href: "#about" },
-  { key: "services", href: "#services" },
-  { key: "portfolio", href: "#portfolio" },
-  { key: "equipment", href: "#equipment" },
-  { key: "contact", href: "#contact" },
-] as const;
-
-const socials = [
-  { name: "Facebook", url: "https://www.facebook.com/HelifilmProdukcija", icon: "M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" },
-  { name: "YouTube", url: "https://www.youtube.com/user/HajrudinSuljic", icon: "M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19.13C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29.3 29.3 0 00-.46-5.43zM9.75 15.02V8.48l5.75 3.27-5.75 3.27z" },
-  { name: "TikTok", url: "https://www.tiktok.com/@helifilm", icon: "M9 12a4 4 0 104 4V4a5 5 0 005 5" },
-  { name: "Instagram", url: "https://www.instagram.com/hajrudin26", icon: "M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01M6.5 2h11A4.5 4.5 0 0122 6.5v11a4.5 4.5 0 01-4.5 4.5h-11A4.5 4.5 0 012 17.5v-11A4.5 4.5 0 016.5 2z" },
+  { key: "work" as const, href: "#work" },
+  { key: "services" as const, href: "#services" },
+  { key: "equipment" as const, href: "#equipment" },
+  { key: "about" as const, href: "#about" },
+  { key: "contact" as const, href: "#contact" },
 ];
+
+const letters = ["H", "E", "L", "I", "F", "I", "L", "M"];
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -27,73 +23,106 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#070b14] border-t border-[#1e3a8a]/15">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-3 gap-12">
-          {/* Brand */}
-          <div>
-            <span className="text-2xl font-bold tracking-wider text-white">
-              HELI<span className="text-[#D4A418]">FILM</span>
+    <footer className="bg-bg border-t border-line" style={{ padding: "100px var(--pad-x) 40px" }}>
+      <div className="section-frame">
+        <div
+          className="flex justify-between display"
+          style={{
+            fontSize: "clamp(64px, 18vw, 260px)",
+            lineHeight: 0.9,
+            letterSpacing: "-0.04em",
+            paddingBottom: 40,
+            borderBottom: "1px solid var(--line)",
+          }}
+        >
+          {letters.slice(0, 4).map((l, i) => (
+            <span key={`l1-${i}`}>{l}</span>
+          ))}
+          <span style={{ color: "var(--accent)" }}>·</span>
+          {letters.slice(4).map((l, i) => (
+            <span key={`l2-${i}`}>{l}</span>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 pt-14">
+          <div className="flex flex-col gap-4">
+            <span className="mono text-[10px] tracking-[0.18em] uppercase text-fg-mute">
+              {t.footer.studio}
             </span>
-            <p className="text-gray-500 mt-3 text-sm">{t.footer.tagline}</p>
+            <p className="text-[14px] leading-[1.8] text-fg-dim m-0">
+              Sarajevo<br />
+              Bosnia &amp; Herzegovina
+            </p>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+          <div className="flex flex-col gap-4">
+            <span className="mono text-[10px] tracking-[0.18em] uppercase text-fg-mute">
+              {t.footer.reach}
+            </span>
+            <p className="text-[14px] leading-[1.8] text-fg-dim m-0">
+              <a href={`mailto:${contactInfo.email}`} className="hover:text-accent transition-colors">
+                {contactInfo.email}
+              </a>
+              <br />
+              <a href={`tel:+${contactInfo.phoneRaw}`} className="hover:text-accent transition-colors">
+                {contactInfo.phone}
+              </a>
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <span className="mono text-[10px] tracking-[0.18em] uppercase text-fg-mute">
               {t.footer.quickLinks}
-            </h3>
-            <div className="grid grid-cols-2 gap-2">
+            </span>
+            <p className="text-[14px] leading-[1.8] text-fg-dim m-0 flex flex-col">
               {navLinks.map((link) => (
                 <a
                   key={link.key}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="text-gray-400 hover:text-[#D4A418] transition-colors text-sm py-1"
+                  className="hover:text-accent transition-colors"
                 >
                   {t.nav[link.key]}
                 </a>
               ))}
-            </div>
+            </p>
           </div>
 
-          {/* Social */}
-          <div>
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+          <div className="flex flex-col gap-4">
+            <span className="mono text-[10px] tracking-[0.18em] uppercase text-fg-mute">
               {t.footer.followUs}
-            </h3>
-            <div className="flex gap-3">
-              {socials.map((social) => (
+            </span>
+            <p className="text-[14px] leading-[1.8] text-fg-dim m-0 flex flex-col">
+              {contactInfo.socials.map((social) => (
                 <a
                   key={social.name}
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-[#D4A418]/10 transition-colors group"
-                  aria-label={social.name}
+                  className="hover:text-accent transition-colors"
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-4 h-4 text-gray-400 group-hover:text-[#D4A418] transition-colors"
-                  >
-                    <path d={social.icon} />
-                  </svg>
+                  {social.name}
                 </a>
               ))}
-            </div>
+              <Link href="/privacy" className="hover:text-accent transition-colors mt-1">
+                {t.footer.privacy}
+              </Link>
+              <Link href="/impressum" className="hover:text-accent transition-colors">
+                {t.footer.impressum}
+              </Link>
+            </p>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-[#1e3a8a]/15 text-center">
-          <p className="text-gray-600 text-sm">
-            &copy; {new Date().getFullYear()} Helifilm Produkcija. {t.footer.rights}
-          </p>
+        <div
+          className="flex flex-col md:flex-row justify-between gap-2 mt-14 pt-6 mono text-[11px] tracking-[0.1em] text-fg-mute"
+          style={{ borderTop: "1px solid var(--line)" }}
+        >
+          <span>{t.footer.rights}</span>
+          <span className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent pulse-dot" />
+            {t.footer.status}
+          </span>
         </div>
       </div>
     </footer>

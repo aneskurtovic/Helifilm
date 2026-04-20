@@ -2,66 +2,78 @@
 
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
-import { services } from "@/data/services";
+import { SectionHeader } from "./ui/SectionHeader";
 
 export default function Services() {
   const { t } = useLanguage();
+  const items = t.services.items;
 
   return (
-    <section id="services" className="relative py-24 lg:py-32 bg-[#111827] overflow-hidden">
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#1e3a8a]/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+    <section id="services" className="relative border-b border-line bg-bg pb-[120px]">
+      <SectionHeader
+        eyebrow={t.services.eyebrow}
+        title={
+          <>
             {t.services.title}
-          </h2>
-          <div className="h-1 w-16 bg-[#D4A418] mx-auto mb-6 rounded-full" />
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            {t.services.subtitle}
-          </p>
-        </motion.div>
+            <br />
+            <em className="italic text-accent">{t.services.titleEm}</em>
+            {t.services.titleRest ? ` ${t.services.titleRest}` : ""}
+          </>
+        }
+        subtitle={t.services.subtitle}
+      />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, i) => {
-            const content = t.services.items[service.translationKey];
-            return (
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                className="group p-6 sm:p-8 rounded-2xl bg-white/[0.03] border border-[#1e3a8a]/20 hover:border-[#D4A418]/30 transition-all duration-300"
-              >
-                <div className="w-14 h-14 rounded-xl bg-[#D4A418]/10 flex items-center justify-center mb-6 group-hover:bg-[#D4A418]/20 transition-colors duration-300">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#D4A418"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-7 h-7"
-                  >
-                    <path d={service.icon} />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-[#D4A418] transition-colors duration-300">
-                  {content.title}
-                </h3>
-                <p className="text-gray-400 leading-relaxed">{content.description}</p>
-              </motion.div>
-            );
-          })}
-        </div>
+      <div className="section-frame pad-x grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-8">
+        {items.map((s, i) => (
+          <motion.article
+            key={s.n}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.6, delay: (i % 3) * 0.05, ease: [0.22, 1, 0.36, 1] }}
+            className="group flex flex-col border-t border-line hover:border-accent transition-colors pt-5"
+          >
+            <div
+              className="relative aspect-[4/3] mb-6 bg-bg-3 overflow-hidden transition-transform duration-500 group-hover:-translate-y-1"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, rgba(212,164,24,0.08) 0%, rgba(255,255,255,0.02) 100%)",
+              }}
+            >
+              <div className="absolute inset-0 flex items-end justify-between pad-x py-4 mono text-[9px] tracking-[0.2em] uppercase text-fg-mute">
+                <span>Fig. {s.n}</span>
+                <span>{s.label}</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between mb-3 mono text-[10px] text-fg-mute tracking-[0.2em]">
+              <span>{s.n}</span>
+              <span className="opacity-40 group-hover:opacity-100 transition-opacity">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" strokeWidth="1.2" />
+                </svg>
+              </span>
+            </div>
+            <h3
+              className="display text-fg mb-3"
+              style={{ fontSize: 32, lineHeight: 1.05, letterSpacing: "-0.01em" }}
+            >
+              {s.t}
+            </h3>
+            <p className="text-[15px] leading-[1.55] text-fg-dim mb-5 flex-1">
+              {s.d}
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {s.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="mono text-[10px] tracking-[0.06em] text-fg-dim border border-line-2 rounded-full px-2.5 py-1"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </motion.article>
+        ))}
       </div>
     </section>
   );

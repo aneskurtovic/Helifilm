@@ -1,72 +1,81 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
-import { equipment } from "@/data/equipment";
-import { basePath } from "@/lib/config";
+import { equipmentItems, categoryOrder } from "@/data/equipment";
+import { SectionHeader } from "./ui/SectionHeader";
 
 export default function Equipment() {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
 
   return (
-    <section id="equipment" className="relative py-24 lg:py-32 bg-[#111827] overflow-hidden">
-      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[#1e3a8a]/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/2" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+    <section id="equipment" className="relative border-b border-line bg-bg-2 pb-[140px]">
+      <SectionHeader
+        eyebrow={t.equipment.eyebrow}
+        title={
+          <>
             {t.equipment.title}
-          </h2>
-          <div className="h-1 w-16 bg-[#D4A418] mx-auto mb-6 rounded-full" />
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            {t.equipment.subtitle}
-          </p>
-        </motion.div>
+            <br />
+            <em className="italic text-accent">{t.equipment.titleEm}</em>
+            {t.equipment.titleRest ? ` ${t.equipment.titleRest}` : ""}
+          </>
+        }
+        subtitle={t.equipment.subtitle}
+      />
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {equipment.map((item, i) => (
+      <div className="section-frame pad-x grid grid-cols-2 lg:grid-cols-4 gap-10 border-t border-line pt-10">
+        {categoryOrder.map((cat, ci) => {
+          const rows = equipmentItems.filter((it) => it.category === cat);
+          return (
             <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 30 }}
+              key={cat}
+              initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -4 }}
-              className="group rounded-2xl overflow-hidden bg-white/[0.03] border border-[#1e3a8a]/20 hover:border-[#D4A418]/20 transition-all duration-300"
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: ci * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col gap-3"
             >
-              <div className="aspect-[16/9] relative overflow-hidden bg-[#0a0f1a]">
-                <Image
-                  src={`${basePath}${item.image}`}
-                  alt={item.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              <div className="flex items-center gap-3 mb-2">
+                <span className="mono text-[10px] tracking-[0.2em] uppercase text-accent">
+                  {t.equipment.categories[cat]}
+                </span>
+                <span className="flex-1 h-px bg-line-2" />
               </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold text-white mb-3">{item.name}</h3>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {item.specs.map((spec) => (
-                    <span
-                      key={spec}
-                      className="px-3 py-1 text-xs font-medium text-[#D4A418] bg-[#D4A418]/10 rounded-full"
-                    >
-                      {spec}
-                    </span>
-                  ))}
+              {rows.map((it) => (
+                <div
+                  key={it.name}
+                  className="flex flex-col gap-0.5 py-2.5"
+                  style={{ borderTop: "1px dashed var(--line)" }}
+                >
+                  <span
+                    className="display text-fg"
+                    style={{ fontSize: 20, lineHeight: 1.2 }}
+                  >
+                    {it.name}
+                  </span>
+                  <span className="mono text-[11px] tracking-[0.06em] text-fg-dim">
+                    {it.spec}
+                  </span>
                 </div>
-                <p className="text-gray-400 leading-relaxed">{item.description[language]}</p>
-              </div>
+              ))}
             </motion.div>
-          ))}
+          );
+        })}
+      </div>
+
+      <div className="section-frame pad-x mt-20">
+        <div
+          className="relative w-full bg-bg-3 overflow-hidden"
+          style={{
+            aspectRatio: "21/9",
+            backgroundImage:
+              "linear-gradient(135deg, rgba(212,164,24,0.1) 0%, rgba(10,10,12,0.6) 100%)",
+          }}
+        >
+          <div className="absolute inset-0 flex items-end justify-between pad-x py-6 mono text-[10px] tracking-[0.2em] uppercase text-fg-mute">
+            <span>Fig. 02</span>
+            <span>STUDIO · GEAR · WALL · SARAJEVO</span>
+          </div>
         </div>
       </div>
     </section>

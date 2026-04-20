@@ -1,133 +1,104 @@
 "use client";
 
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { basePath } from "@/lib/config";
 
-function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true });
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!isInView) return;
-    let start = 0;
-    const duration = 2000;
-    const increment = target / (duration / 16);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [isInView, target]);
-
-  return (
-    <span ref={ref}>
-      {count}
-      {suffix}
-    </span>
-  );
-}
-
 export default function About() {
   const { t } = useLanguage();
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Drone-view perspective: noticeable tilt + lift as you scroll into view
-  const rotateX = useTransform(scrollYProgress, [0, 0.3, 0.5], [15, 4, 0]);
-  const rotateY = useTransform(scrollYProgress, [0, 0.3, 0.5], [-10, -2, 0]);
-  const imgScale = useTransform(scrollYProgress, [0, 0.4], [1.15, 1]);
-  const imgY = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
-
-  const stats = [
-    { value: 11, suffix: "+", label: t.about.stats.years },
-    { value: 500, suffix: "+", label: t.about.stats.projects },
-    { value: 8, suffix: "+", label: t.about.stats.countries },
-    { value: 200, suffix: "+", label: t.about.stats.clients },
-  ];
 
   return (
-    <section id="about" ref={sectionRef} className="relative py-24 lg:py-32 bg-[#0a0f1a] overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#1e3a8a]/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="about" className="border-b border-line bg-bg">
+      <div className="section-frame pad-x py-[120px] grid md:grid-cols-2 gap-8">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center"
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="relative row-span-2 w-full overflow-hidden bg-bg-3"
+          style={{ aspectRatio: "3/4" }}
         >
-          {/* Owner photo — drone perspective tilt on scroll */}
-          <motion.div
-            className="relative overflow-hidden"
-            style={{
-              perspective: 800,
-            }}
-          >
-            <motion.div
-              className="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 relative"
-              style={{
-                rotateX,
-                rotateY,
-                scale: imgScale,
-                y: imgY,
-                transformOrigin: "center center",
-              }}
-            >
-              <img
-                src={`${basePath}/images/owner.jpg`}
-                alt="Hajrudin Suljic - Helifilm"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a]/40 via-transparent to-transparent" />
-            </motion.div>
-            <div className="absolute -bottom-4 -right-4 w-full h-full rounded-2xl border-2 border-[#D4A418]/20 -z-10" />
-          </motion.div>
-
-          {/* Text Content */}
-          <div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-              {t.about.title}
-            </h2>
-            <div className="h-1 w-16 bg-[#D4A418] mb-8 rounded-full" />
-            <p className="text-gray-400 text-lg leading-relaxed mb-4">
-              {t.about.description}
-            </p>
-            <p className="text-gray-400 text-lg leading-relaxed">
-              {t.about.description2}
-            </p>
+          <Image
+            src={`${basePath}/images/owner.jpg`}
+            alt="Hajrudin Suljić — Helifilm"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            unoptimized
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-bg/60 via-transparent to-transparent" />
+          <div className="absolute top-4 left-4 right-4 flex justify-between mono text-[10px] tracking-[0.2em] uppercase text-white/70">
+            <span>Fig. 01</span>
+            <span>STUDIO · SARAJEVO · 2014</span>
           </div>
         </motion.div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 mt-20">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="text-center p-4 sm:p-6 rounded-2xl bg-white/[0.03] border border-[#1e3a8a]/20 hover:border-[#D4A418]/20 transition-colors duration-300"
-            >
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#D4A418] mb-2">
-                <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="py-10"
+        >
+          <div className="inline-flex items-center gap-2.5 mono text-[11px] tracking-[0.18em] uppercase text-fg-dim mb-7">
+            <span className="w-2 h-2 rounded-full bg-accent" />
+            {t.about.eyebrow}
+          </div>
+          <h2
+            className="display text-fg"
+            style={{ fontSize: "clamp(40px, 5.5vw, 80px)", lineHeight: 0.96, letterSpacing: "-0.03em" }}
+          >
+            {t.about.title}{" "}
+            <em className="italic text-accent">{t.about.titleEm}</em>
+            <br />
+            {t.about.titleRest}
+          </h2>
+
+          <p className="mt-5 text-[16px] leading-[1.6] text-fg-dim max-w-[520px]">
+            {t.about.description}
+          </p>
+          <p className="mt-5 text-[16px] leading-[1.6] text-fg-dim max-w-[520px]">
+            {t.about.description2}
+          </p>
+
+          <div className="mt-10 pt-8 border-t border-line grid grid-cols-1 sm:grid-cols-3 gap-8">
+            {t.about.signatures.map((sig) => (
+              <div key={sig.role} className="flex flex-col gap-1">
+                <span className="mono text-[10px] tracking-[0.12em] uppercase text-fg-mute">
+                  {sig.role}
+                </span>
+                <span
+                  className="display text-fg"
+                  style={{ fontSize: 20 }}
+                >
+                  {sig.name}
+                </span>
               </div>
-              <div className="text-sm text-gray-400 uppercase tracking-wider">{stat.label}</div>
-            </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="relative overflow-hidden bg-bg-3"
+          style={{ aspectRatio: "16/10" }}
+        >
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, rgba(212,164,24,0.08) 0%, rgba(30,58,138,0.1) 100%)",
+            }}
+          />
+          <div className="absolute inset-0 flex items-end justify-between pad-x py-4 mono text-[10px] tracking-[0.2em] uppercase text-fg-mute">
+            <span>Fig. 03</span>
+            <span>FLIGHT · DINARIC · SUNSET</span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

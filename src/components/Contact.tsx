@@ -1,213 +1,347 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
+import { contactInfo } from "@/data/contact";
+
+type ChipProps = {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+};
+
+const Chip = ({ label, active, onClick }: ChipProps) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className="rounded-full px-4 py-3 min-h-[44px] text-[13px] transition-all cursor-pointer"
+    style={{
+      border: active
+        ? "1px solid var(--accent)"
+        : "1px solid rgba(255,255,255,0.18)",
+      background: active ? "var(--accent)" : "transparent",
+      color: active ? "#0a0a0c" : "rgba(255,255,255,0.85)",
+    }}
+  >
+    {label}
+  </button>
+);
 
 export default function Contact() {
   const { t } = useLanguage();
-  const [submitted, setSubmitted] = useState(false);
+  const [step, setStep] = useState(1);
+  const [data, setData] = useState({
+    service: "",
+    budget: "",
+    when: "",
+    location: "",
+    name: "",
+    company: "",
+    email: "",
+    brief: "",
+  });
+  const set = (k: keyof typeof data, v: string) =>
+    setData((d) => ({ ...d, [k]: v }));
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-  };
+  const services = Object.values(t.contact.form.projectTypes);
+  const budgets = Object.values(t.contact.form.budgets);
+  const whens = ["This month", "Next 30–60 days", "Q3 / later", "Flexible"];
 
-  const socials = [
-    {
-      name: "Facebook",
-      url: "https://www.facebook.com/HelifilmProdukcija",
-      icon: "M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z",
-    },
-    {
-      name: "YouTube",
-      url: "https://www.youtube.com/user/HajrudinSuljic",
-      icon: "M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19.13C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29.3 29.3 0 00-.46-5.43zM9.75 15.02V8.48l5.75 3.27-5.75 3.27z",
-    },
-    {
-      name: "TikTok",
-      url: "https://www.tiktok.com/@helifilm",
-      icon: "M9 12a4 4 0 104 4V4a5 5 0 005 5",
-    },
-    {
-      name: "Instagram",
-      url: "https://www.instagram.com/hajrudin26",
-      icon: "M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01M6.5 2h11A4.5 4.5 0 0122 6.5v11a4.5 4.5 0 01-4.5 4.5h-11A4.5 4.5 0 012 17.5v-11A4.5 4.5 0 016.5 2z",
-    },
-  ];
+  const canNext =
+    (step === 1 && data.service) ||
+    (step === 2 && data.budget && data.when) ||
+    (step === 3 && data.name && data.email);
+
+  const labels = ["Scope", "Timing", "You"];
 
   return (
-    <section id="contact" className="relative py-24 lg:py-32 bg-[#111827] overflow-hidden">
-      <div className="absolute bottom-0 left-1/3 w-[500px] h-[500px] bg-[#1e3a8a]/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+    <section
+      id="contact"
+      className="relative"
+      style={{ background: "var(--accent)", color: "#0a0a0c", padding: "120px 0" }}
+    >
+      <div className="section-frame pad-x grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
+        {/* LEFT */}
+        <div>
+          <div className="inline-flex items-center gap-2.5 mono text-[11px] tracking-[0.18em] uppercase mb-5" style={{ color: "rgba(10,10,12,0.6)" }}>
+            <span className="w-2 h-2 rounded-full bg-bg" />
+            {t.contact.eyebrow}
+          </div>
+          <h2
+            className="display"
+            style={{
+              fontSize: "clamp(48px, 6vw, 96px)",
+              lineHeight: 0.95,
+              letterSpacing: "-0.03em",
+              color: "#0a0a0c",
+              margin: "16px 0 24px",
+            }}
+          >
             {t.contact.title}
+            <br />
+            <em className="italic">{t.contact.titleEm}</em>
+            {t.contact.titleRest ? ` ${t.contact.titleRest}` : ""}
           </h2>
-          <div className="h-1 w-16 bg-[#D4A418] mx-auto mb-6 rounded-full" />
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p
+            className="text-[17px] max-w-[440px] mb-12"
+            style={{ color: "rgba(10,10,12,0.7)" }}
+          >
             {t.contact.subtitle}
           </p>
-        </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <motion.form
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            onSubmit={handleSubmit}
-            className="space-y-6"
+          <div
+            className="grid grid-cols-1 sm:grid-cols-3 gap-6 py-6 mb-8"
+            style={{
+              borderTop: "1px solid rgba(10,10,12,0.15)",
+              borderBottom: "1px solid rgba(10,10,12,0.15)",
+            }}
           >
-            <div>
-              <input
-                type="text"
-                placeholder={t.contact.form.name}
-                required
-                className="w-full px-5 py-4 rounded-xl bg-white/[0.05] border border-[#1e3a8a]/20 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#D4A418]/50 focus:bg-white/[0.08] transition-all duration-300"
-              />
-            </div>
-            <div>
-              <input
-                type="email"
-                placeholder={t.contact.form.email}
-                required
-                className="w-full px-5 py-4 rounded-xl bg-white/[0.05] border border-[#1e3a8a]/20 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#D4A418]/50 focus:bg-white/[0.08] transition-all duration-300"
-              />
-            </div>
-            <div>
-              <select
-                required
-                className="w-full px-5 py-4 rounded-xl bg-white/[0.05] border border-[#1e3a8a]/20 text-white focus:outline-none focus:border-[#D4A418]/50 focus:bg-white/[0.08] transition-all duration-300"
+            <div className="flex flex-col gap-1">
+              <span className="mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "rgba(10,10,12,0.55)" }}>
+                {t.contact.info.email}
+              </span>
+              <a
+                href={`mailto:${contactInfo.email}`}
+                className="display"
+                style={{ fontSize: 20, color: "#0a0a0c" }}
               >
-                <option value="">{t.contact.form.projectType}</option>
-                <option value="aerial">{t.contact.form.projectTypes.aerial}</option>
-                <option value="realEstate">{t.contact.form.projectTypes.realEstate}</option>
-                <option value="event">{t.contact.form.projectTypes.event}</option>
-                <option value="commercial">{t.contact.form.projectTypes.commercial}</option>
-                <option value="other">{t.contact.form.projectTypes.other}</option>
-              </select>
+                {contactInfo.email}
+              </a>
             </div>
-            <div>
-              <textarea
-                placeholder={t.contact.form.message}
-                required
-                rows={5}
-                className="w-full px-5 py-4 rounded-xl bg-white/[0.05] border border-[#1e3a8a]/20 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#D4A418]/50 focus:bg-white/[0.08] transition-all duration-300 resize-none"
-              />
+            <div className="flex flex-col gap-1">
+              <span className="mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "rgba(10,10,12,0.55)" }}>
+                {t.contact.info.phone}
+              </span>
+              <a
+                href={`tel:+${contactInfo.phoneRaw}`}
+                className="display"
+                style={{ fontSize: 20, color: "#0a0a0c" }}
+              >
+                {contactInfo.phone}
+              </a>
             </div>
-            <button
-              type="submit"
-              className="w-full py-4 rounded-xl bg-[#D4A418] text-black font-semibold text-lg hover:bg-[#c49615] transition-colors duration-300"
-            >
-              {submitted ? t.contact.form.success : t.contact.form.send}
-            </button>
-          </motion.form>
+            <div className="flex flex-col gap-1">
+              <span className="mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "rgba(10,10,12,0.55)" }}>
+                {t.contact.info.location}
+              </span>
+              <span className="display" style={{ fontSize: 20, color: "#0a0a0c" }}>
+                {contactInfo.locationCityEn}
+              </span>
+            </div>
+          </div>
 
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+          <div className="flex flex-col gap-2.5 mono text-[12px] tracking-[0.08em]">
+            {t.contact.assurances.map((a) => (
+              <div key={a} className="flex items-center gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-bg" />
+                {a}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* RIGHT */}
+        <div
+          className="p-10"
+          style={{
+            background: "#0a0a0c",
+            color: "#f4f1ea",
+            borderRadius: 2,
+            minHeight: 520,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div
+            className="flex gap-6 mb-8 pb-6"
+            style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}
           >
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#D4A418]/10 flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="#D4A418" strokeWidth="1.5" className="w-5 h-5">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <path d="M22 6l-10 7L2 6" />
+            {[1, 2, 3].map((n) => (
+              <div
+                key={n}
+                className="flex items-center gap-2.5"
+                style={{ opacity: step >= n ? 1 : 0.4, transition: "opacity .3s" }}
+              >
+                <span
+                  className="inline-flex items-center justify-center w-7 h-7 rounded-full mono text-[11px]"
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    background: step >= n ? "var(--accent)" : "transparent",
+                    color: step >= n ? "#0a0a0c" : "inherit",
+                  }}
+                >
+                  0{n}
+                </span>
+                <span className="mono text-[11px] tracking-[0.12em] uppercase" style={{ color: "rgba(255,255,255,0.6)" }}>
+                  {labels[n - 1]}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex-1"
+          >
+            {step === 1 && (
+              <>
+                <label className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  01 · {t.contact.form.projectType}
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {services.map((s) => (
+                    <Chip key={s} label={s} active={data.service === s} onClick={() => set("service", s)} />
+                  ))}
+                </div>
+                <label htmlFor="contact-brief" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3 mt-8" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  {t.contact.form.message}
+                </label>
+                <textarea
+                  id="contact-brief"
+                  value={data.brief}
+                  onChange={(e) => set("brief", e.target.value)}
+                  className="w-full bg-transparent text-[16px] py-3 outline-none"
+                  style={{
+                    borderBottom: "1px solid rgba(255,255,255,0.45)",
+                    color: "#f4f1ea",
+                    minHeight: 80,
+                    resize: "vertical",
+                  }}
+                  placeholder="e.g. 60s tourism promo — hero shots at dawn, social cuts + cinema master."
+                />
+              </>
+            )}
+
+            {step === 2 && (
+              <>
+                <label className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  02 · {t.contact.form.budget}
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {budgets.map((b) => (
+                    <Chip key={b} label={b} active={data.budget === b} onClick={() => set("budget", b)} />
+                  ))}
+                </div>
+                <label className="mono text-[11px] tracking-[0.12em] uppercase block mb-3 mt-8" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  {t.contact.form.location}
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {whens.map((w) => (
+                    <Chip key={w} label={w} active={data.when === w} onClick={() => set("when", w)} />
+                  ))}
+                </div>
+                <input
+                  id="contact-location"
+                  value={data.location}
+                  onChange={(e) => set("location", e.target.value)}
+                  className="w-full bg-transparent text-[16px] py-3 outline-none mt-6"
+                  style={{ borderBottom: "1px solid rgba(255,255,255,0.45)", color: "#f4f1ea" }}
+                  placeholder="City, region, or 'travel OK'"
+                  aria-label="Shoot location"
+                />
+              </>
+            )}
+
+            {step === 3 && (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="contact-name" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
+                      {t.contact.form.name}
+                    </label>
+                    <input
+                      id="contact-name"
+                      value={data.name}
+                      onChange={(e) => set("name", e.target.value)}
+                      className="w-full bg-transparent text-[16px] py-3 outline-none"
+                      style={{ borderBottom: "1px solid rgba(255,255,255,0.45)", color: "#f4f1ea" }}
+                      autoComplete="name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="contact-company" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
+                      {t.contact.form.company}
+                    </label>
+                    <input
+                      id="contact-company"
+                      value={data.company}
+                      onChange={(e) => set("company", e.target.value)}
+                      className="w-full bg-transparent text-[16px] py-3 outline-none"
+                      style={{ borderBottom: "1px solid rgba(255,255,255,0.45)", color: "#f4f1ea" }}
+                      autoComplete="organization"
+                    />
+                  </div>
+                </div>
+                <label htmlFor="contact-email" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3 mt-6" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  {t.contact.form.email}
+                </label>
+                <input
+                  id="contact-email"
+                  value={data.email}
+                  onChange={(e) => set("email", e.target.value)}
+                  type="email"
+                  className="w-full bg-transparent text-[16px] py-3 outline-none"
+                  style={{ borderBottom: "1px solid rgba(255,255,255,0.45)", color: "#f4f1ea" }}
+                  autoComplete="email"
+                />
+              </>
+            )}
+
+            {step === 4 && (
+              <div className="flex flex-col items-center text-center gap-4 py-10">
+                <div
+                  className="w-14 h-14 rounded-full flex items-center justify-center"
+                  style={{ background: "var(--accent)" }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 10L8 14L16 6" stroke="#0a0a0c" strokeWidth="2" />
                   </svg>
                 </div>
-                <div>
-                  <div className="text-gray-400 text-sm mb-1">{t.contact.info.email}</div>
-                  <a href="mailto:info@helifilm.ba" className="text-white hover:text-[#D4A418] transition-colors">
-                    info@helifilm.ba
-                  </a>
-                </div>
+                <h3 className="display m-0" style={{ fontSize: 36 }}>
+                  {t.contact.form.success}
+                </h3>
+                <p className="max-w-[320px] m-0" style={{ color: "rgba(255,255,255,0.7)" }}>
+                  A producer will reply within 48 hours with a scoped quote.
+                </p>
               </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#D4A418]/10 flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="#D4A418" strokeWidth="1.5" className="w-5 h-5">
-                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="text-gray-400 text-sm mb-1">{t.contact.info.phone}</div>
-                  <a href="tel:+38761288221" className="text-white hover:text-[#D4A418] transition-colors">
-                    +387 61 288 221
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#D4A418]/10 flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="#D4A418" strokeWidth="1.5" className="w-5 h-5">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="text-gray-400 text-sm mb-1">{t.contact.info.location}</div>
-                  <span className="text-white">{t.contact.info.locationValue}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Social Links */}
-            <div>
-              <h3 className="text-white font-semibold mb-4">{t.contact.info.social}</h3>
-              <div className="flex gap-3">
-                {socials.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 rounded-xl bg-white/5 border border-[#1e3a8a]/20 flex items-center justify-center hover:bg-[#D4A418]/10 hover:border-[#D4A418]/30 transition-all duration-300 group"
-                    aria-label={social.name}
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-5 h-5 text-gray-400 group-hover:text-[#D4A418] transition-colors"
-                    >
-                      <path d={social.icon} />
-                    </svg>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Map */}
-            <div className="aspect-[16/9] rounded-xl overflow-hidden bg-[#0d1525] border border-[#1e3a8a]/20">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d46080.272763887!2d18.3870!3d43.8563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4758c8c9a4b5dfd1%3A0x5e84839ed7e47a8e!2sSarajevo!5e0!3m2!1sen!2sba!4v1"
-                width="100%"
-                height="100%"
-                style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Sarajevo Map"
-              />
-            </div>
+            )}
           </motion.div>
+
+          {step < 4 && (
+            <div
+              className="flex justify-between mt-8 pt-6"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
+            >
+              {step > 1 ? (
+                <button
+                  type="button"
+                  onClick={() => setStep(step - 1)}
+                  className="rounded-full border border-line-2 px-5 py-3 mono text-[11px] uppercase tracking-[0.14em] text-fg-dim hover:text-fg transition-colors"
+                >
+                  ← Back
+                </button>
+              ) : (
+                <span />
+              )}
+              <button
+                type="button"
+                disabled={!canNext}
+                onClick={() => setStep(step + 1)}
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[13px] font-medium uppercase tracking-[0.1em] transition-opacity"
+                style={{
+                  background: "var(--accent)",
+                  color: "#0a0a0c",
+                  opacity: canNext ? 1 : 0.4,
+                }}
+              >
+                {step === 3 ? t.contact.form.send : "Continue →"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>

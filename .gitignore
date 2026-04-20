@@ -32,3 +32,10 @@ public/videos/hero-original.mp4
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local dev artifacts
+.playwright-mcp/
+.design-reference/
+*.png
+ffmpeg
+.claude/

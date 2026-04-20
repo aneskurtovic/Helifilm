@@ -1,167 +1,187 @@
 "use client";
 
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import { portfolioItems, getYoutubeThumbnail } from "@/data/portfolio";
+import {
+  portfolioItems,
+  getYoutubeThumbnail,
+  getYoutubeFallbackThumbnail,
+  PortfolioCategory,
+} from "@/data/portfolio";
+import { SectionHeader } from "./ui/SectionHeader";
 
-type FilterCategory = "all" | "aerial" | "commercial" | "events" | "realEstate";
+type FilterKey = "all" | PortfolioCategory;
+type LightboxState = { id: string; title: string } | null;
+
+function PortfolioThumb({ youtubeId, title }: { youtubeId: string; title: string }) {
+  const [src, setSrc] = useState(getYoutubeThumbnail(youtubeId));
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt={title}
+      onError={() => setSrc(getYoutubeFallbackThumbnail(youtubeId))}
+      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+    />
+  );
+}
+
+const filterOrder: FilterKey[] = [
+  "all",
+  "aerial",
+  "commercial",
+  "events",
+  "realEstate",
+];
 
 export default function Portfolio() {
   const { t } = useLanguage();
-  const [activeFilter, setActiveFilter] = useState<FilterCategory>("all");
-  const [lightbox, setLightbox] = useState<string | null>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: gridRef,
-    offset: ["start end", "end start"],
-  });
-  // Drone flyover: grid shifts perspective as you scroll
-  const gridRotateX = useTransform(scrollYProgress, [0, 0.4, 1], [6, 0, -3]);
-  const gridY = useTransform(scrollYProgress, [0, 0.5], [40, 0]);
+  const [filter, setFilter] = useState<FilterKey>("all");
+  const [lightbox, setLightbox] = useState<LightboxState>(null);
 
-  const filters: { key: FilterCategory; label: string }[] = [
-    { key: "all", label: t.portfolio.filters.all },
-    { key: "aerial", label: t.portfolio.filters.aerial },
-    { key: "commercial", label: t.portfolio.filters.commercial },
-    { key: "events", label: t.portfolio.filters.events },
-    { key: "realEstate", label: t.portfolio.filters.realEstate },
-  ];
-
-  const filtered =
-    activeFilter === "all"
+  const shown =
+    filter === "all"
       ? portfolioItems
-      : portfolioItems.filter((item) => item.category === activeFilter);
+      : portfolioItems.filter((p) => p.category === filter);
+
+  const videoSchemas = portfolioItems.map((item) => ({
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: item.title,
+    description: item.brief,
+    thumbnailUrl: getYoutubeThumbnail(item.youtubeId),
+    contentUrl: `https://www.youtube.com/watch?v=${item.youtubeId}`,
+    embedUrl: `https://www.youtube.com/embed/${item.youtubeId}`,
+    uploadDate: item.year ? `${item.year}-01-01` : "2023-01-01",
+  }));
+
+  const ratioClass = (r: string | undefined) => {
+    if (r === "tall") return "md:col-span-6 lg:col-span-5 lg:row-span-2";
+    if (r === "wide") return "md:col-span-12 lg:col-span-7";
+    return "md:col-span-6";
+  };
+
+  const ratioAspect = (r: string | undefined) => {
+    if (r === "tall") return "aspect-[4/5]";
+    return "aspect-[16/10]";
+  };
 
   return (
-    <section id="portfolio" className="relative py-24 lg:py-32 bg-[#0a0f1a] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+    <section id="work" className="relative border-b border-line bg-bg-2 pb-[120px]">
+      <SectionHeader
+        eyebrow={t.portfolio.eyebrow}
+        title={
+          <>
             {t.portfolio.title}
-          </h2>
-          <div className="h-1 w-16 bg-[#D4A418] mx-auto mb-6 rounded-full" />
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            {t.portfolio.subtitle}
-          </p>
-        </motion.div>
-
-        {/* Showreel */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-16"
-        >
-          <div className="aspect-video rounded-2xl overflow-hidden bg-[#111827] border border-[#1e3a8a]/20">
-            <iframe
-              src="https://www.youtube.com/embed/HkyzhcDuWB0"
-              title="Helifilm Showreel"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full"
-              loading="lazy"
-            />
-          </div>
-          <p className="text-center text-gray-500 text-sm mt-3">{t.portfolio.showreel}</p>
-        </motion.div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {filters.map((filter) => (
-            <button
-              key={filter.key}
-              onClick={() => setActiveFilter(filter.key)}
-              className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
-                activeFilter === filter.key
-                  ? "bg-[#D4A418] text-black"
-                  : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-[#1e3a8a]/20"
-              }`}
-            >
-              {filter.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Grid — drone flyover perspective */}
-        <motion.div
-          ref={gridRef}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          style={{
-            perspective: 1200,
-            rotateX: gridRotateX,
-            y: gridY,
-            transformOrigin: "center top",
-          }}
-        >
-          <AnimatePresence mode="popLayout">
-            {filtered.map((item, i) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3, delay: i * 0.05 }}
-                onClick={() => setLightbox(item.youtubeId)}
-                className="group cursor-pointer"
+            <br />
+            <em className="italic text-accent">{t.portfolio.titleEm}</em>
+            {t.portfolio.titleRest ? ` ${t.portfolio.titleRest}` : ""}
+          </>
+        }
+        subtitle={t.portfolio.subtitle}
+        right={
+          <div className="flex flex-wrap gap-2 mt-8">
+            {filterOrder.map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-[18px] py-3 min-h-[44px] rounded-full border mono text-[11px] tracking-[0.1em] uppercase transition-colors cursor-pointer ${
+                  filter === f
+                    ? "bg-accent text-bg border-accent"
+                    : "border-line-2 text-fg-dim hover:text-fg hover:border-fg-dim"
+                }`}
               >
-                <div className="relative aspect-video rounded-xl overflow-hidden bg-[#111827] border border-[#1e3a8a]/20">
-                  <img
-                    src={getYoutubeThumbnail(item.youtubeId)}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  {/* Play overlay */}
-                  <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-all duration-300">
-                    <div className="w-14 h-14 rounded-full bg-[#D4A418]/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-300">
-                      <svg viewBox="0 0 24 24" fill="black" className="w-6 h-6 ml-1">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                  </div>
+                {t.portfolio.filters[f]}
+              </button>
+            ))}
+          </div>
+        }
+      />
+
+      <div className="section-frame pad-x grid grid-cols-1 md:grid-cols-12 gap-6">
+        {shown.map((item, i) => (
+          <motion.button
+            key={item.id}
+            type="button"
+            onClick={() => setLightbox({ id: item.youtubeId, title: item.title })}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.6, delay: (i % 4) * 0.05, ease: [0.22, 1, 0.36, 1] }}
+            className={`group relative flex flex-col gap-4 text-left hover:-translate-y-1 transition-transform duration-500 ${ratioClass(item.ratio)}`}
+            aria-label={`Play ${item.title}`}
+          >
+            <div className={`relative overflow-hidden ${ratioAspect(item.ratio)} ${item.ratio === "tall" ? "h-full" : ""} bg-bg-3`}>
+              <PortfolioThumb youtubeId={item.youtubeId} title={item.title} />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+              {item.label && (
+                <div className="absolute top-4 left-4 mono text-[10px] tracking-[0.2em] uppercase text-white/70">
+                  {item.label}
                 </div>
-                <h3 className="text-white font-medium mt-3 group-hover:text-[#D4A418] transition-colors">
+              )}
+
+              <div
+                className="absolute top-1/2 left-1/2 w-16 h-16 rounded-full bg-accent text-bg flex items-center justify-center opacity-70 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300"
+                style={{ transform: "translate(-50%, -50%)" }}
+              >
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M5 3L14 9L5 15V3Z" fill="currentColor" />
+                </svg>
+              </div>
+            </div>
+
+            <div className="flex items-start justify-between gap-5 pt-4 border-t border-line">
+              <div className="flex flex-col gap-1">
+                <span className="mono text-[10px] tracking-[0.14em] text-fg-mute">
+                  № {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3
+                  className="display text-fg group-hover:text-accent transition-colors"
+                  style={{ fontSize: 24, lineHeight: 1.1 }}
+                >
                   {item.title}
                 </h3>
-                <p className="text-gray-500 text-sm mt-1">{item.description}</p>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* View All CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mt-12"
-        >
-          <a
-            href="https://www.youtube.com/user/HajrudinSuljic"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-white/5 text-white rounded-full font-medium hover:bg-[#D4A418]/10 hover:text-[#D4A418] border border-[#1e3a8a]/20 hover:border-[#D4A418]/30 transition-all duration-300"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-              <path d="M23.5 6.2c-.3-1-1-1.8-2-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.5.6c-1 .3-1.7 1.1-2 2.1C0 8.1 0 12 0 12s0 3.9.5 5.8c.3 1 1 1.8 2 2.1 1.9.6 9.5.6 9.5.6s7.6 0 9.5-.6c1-.3 1.7-1.1 2-2.1.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z" />
-            </svg>
-            {t.portfolio.viewAll}
-          </a>
-        </motion.div>
+                {(item.client || item.role) && (
+                  <span className="mono text-[11px] tracking-[0.08em] text-fg-dim">
+                    {item.client}
+                    {item.client && item.role ? " — " : ""}
+                    {item.role}
+                  </span>
+                )}
+              </div>
+              <div className="flex items-start gap-3 shrink-0">
+                {item.year && (
+                  <span className="mono text-[11px] text-fg-dim">
+                    {item.year}
+                  </span>
+                )}
+                <span className="text-fg-dim group-hover:text-accent transition-colors">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" strokeWidth="1.2" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </motion.button>
+        ))}
       </div>
 
-      {/* Lightbox */}
+      <div className="section-frame pad-x mt-16 flex justify-center">
+        <a
+          href="https://www.youtube.com/user/HajrudinSuljic"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-full border border-line-2 px-5 py-3 mono text-[11px] uppercase tracking-[0.14em] text-fg-dim hover:text-fg hover:border-fg-dim transition-colors"
+        >
+          {t.portfolio.viewAll}
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" strokeWidth="1.2" />
+          </svg>
+        </a>
+      </div>
+
       <AnimatePresence>
         {lightbox && (
           <motion.div
@@ -169,33 +189,41 @@ export default function Portfolio() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setLightbox(null)}
-            className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4"
           >
             <motion.div
-              initial={{ scale: 0.9 }}
+              initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
+              exit={{ scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-4xl aspect-video rounded-xl overflow-hidden"
+              className="w-full max-w-5xl aspect-video overflow-hidden"
             >
               <iframe
-                src={`https://www.youtube.com/embed/${lightbox}?autoplay=1`}
-                title="Video"
+                src={`https://www.youtube.com/embed/${lightbox.id}?autoplay=1&vq=hd1080&rel=0`}
+                title={`Play: ${lightbox.title}`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                className="w-full h-full"
+                className="h-full w-full"
               />
             </motion.div>
             <button
               onClick={() => setLightbox(null)}
-              className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:text-white hover:bg-white/20 text-2xl transition-colors"
+              className="absolute top-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white/75 hover:bg-white/20 hover:text-white transition-colors"
               aria-label="Close"
             >
-              &times;
+              <span className="text-2xl leading-none">&times;</span>
             </button>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {videoSchemas.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
     </section>
   );
 }
