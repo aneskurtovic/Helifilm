@@ -5,6 +5,12 @@ import { motion, useReducedMotion } from "framer-motion";
 const FLIGHT_PATH =
   "M 80 640 C 280 420, 520 720, 740 460 S 1120 280, 1360 520";
 
+const FLIGHT_PATH_B =
+  "M 1380 200 C 1100 320, 900 140, 680 260 S 320 180, 60 300";
+
+const FLIGHT_PATH_C =
+  "M 200 820 C 420 700, 600 820, 820 740 S 1060 800, 1300 700";
+
 const WAYPOINTS = [
   { x: 280, y: 510, delay: "0s" },
   { x: 740, y: 460, delay: "1s" },
@@ -89,7 +95,7 @@ export default function FlightPath() {
           ))}
         </g>
 
-        {/* Flight path (fades in) */}
+        {/* Flight paths */}
         <motion.path
           id="flight-path"
           d={FLIGHT_PATH}
@@ -100,6 +106,28 @@ export default function FlightPath() {
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.4, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        />
+        <motion.path
+          id="flight-path-b"
+          d={FLIGHT_PATH_B}
+          stroke="rgba(244,241,234,0.18)"
+          strokeWidth="0.8"
+          strokeDasharray="3 8"
+          fill="none"
+          initial={reduce ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.4, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
+        />
+        <motion.path
+          id="flight-path-c"
+          d={FLIGHT_PATH_C}
+          stroke="rgba(244,241,234,0.14)"
+          strokeWidth="0.8"
+          strokeDasharray="3 8"
+          fill="none"
+          initial={reduce ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.4, delay: 1.6, ease: [0.22, 1, 0.36, 1] }}
         />
 
         {/* Waypoints + pulse rings */}
@@ -136,7 +164,7 @@ export default function FlightPath() {
           </g>
         ))}
 
-        {/* Drone marker gliding along the path */}
+        {/* Drone A — primary, glides main path */}
         <g transform={reduce ? "translate(740, 460)" : undefined}>
           <line x1="0" y1="0" x2="-6" y2="-6" stroke="#D4A418" strokeWidth="0.9" />
           <line x1="0" y1="0" x2="6" y2="-6" stroke="#D4A418" strokeWidth="0.9" />
@@ -148,13 +176,44 @@ export default function FlightPath() {
           <circle cx="6" cy="6" r="1.8" fill="none" stroke="#D4A418" strokeWidth="0.8" />
           <circle cx="0" cy="0" r="2" fill="#D4A418" />
           {!reduce && (
-            <animateMotion
-              dur="14s"
-              repeatCount="indefinite"
-              rotate="auto"
-              begin="1.2s"
-            >
+            <animateMotion dur="14s" repeatCount="indefinite" rotate="auto" begin="1.2s">
               <mpath href="#flight-path" />
+            </animateMotion>
+          )}
+        </g>
+
+        {/* Drone B — smaller, upper path, slower */}
+        <g opacity="0.55" transform={reduce ? "translate(680, 260)" : undefined}>
+          <line x1="0" y1="0" x2="-4" y2="-4" stroke="#D4A418" strokeWidth="0.7" />
+          <line x1="0" y1="0" x2="4" y2="-4" stroke="#D4A418" strokeWidth="0.7" />
+          <line x1="0" y1="0" x2="-4" y2="4" stroke="#D4A418" strokeWidth="0.7" />
+          <line x1="0" y1="0" x2="4" y2="4" stroke="#D4A418" strokeWidth="0.7" />
+          <circle cx="-4" cy="-4" r="1.3" fill="none" stroke="#D4A418" strokeWidth="0.7" />
+          <circle cx="4" cy="-4" r="1.3" fill="none" stroke="#D4A418" strokeWidth="0.7" />
+          <circle cx="-4" cy="4" r="1.3" fill="none" stroke="#D4A418" strokeWidth="0.7" />
+          <circle cx="4" cy="4" r="1.3" fill="none" stroke="#D4A418" strokeWidth="0.7" />
+          <circle cx="0" cy="0" r="1.4" fill="#D4A418" />
+          {!reduce && (
+            <animateMotion dur="19s" repeatCount="indefinite" rotate="auto" begin="3.5s">
+              <mpath href="#flight-path-b" />
+            </animateMotion>
+          )}
+        </g>
+
+        {/* Drone C — smallest, lower path, fastest */}
+        <g opacity="0.38" transform={reduce ? "translate(820, 740)" : undefined}>
+          <line x1="0" y1="0" x2="-3" y2="-3" stroke="#D4A418" strokeWidth="0.6" />
+          <line x1="0" y1="0" x2="3" y2="-3" stroke="#D4A418" strokeWidth="0.6" />
+          <line x1="0" y1="0" x2="-3" y2="3" stroke="#D4A418" strokeWidth="0.6" />
+          <line x1="0" y1="0" x2="3" y2="3" stroke="#D4A418" strokeWidth="0.6" />
+          <circle cx="-3" cy="-3" r="1" fill="none" stroke="#D4A418" strokeWidth="0.6" />
+          <circle cx="3" cy="-3" r="1" fill="none" stroke="#D4A418" strokeWidth="0.6" />
+          <circle cx="-3" cy="3" r="1" fill="none" stroke="#D4A418" strokeWidth="0.6" />
+          <circle cx="3" cy="3" r="1" fill="none" stroke="#D4A418" strokeWidth="0.6" />
+          <circle cx="0" cy="0" r="1.1" fill="#D4A418" />
+          {!reduce && (
+            <animateMotion dur="11s" repeatCount="indefinite" rotate="auto" begin="6s">
+              <mpath href="#flight-path-c" />
             </animateMotion>
           )}
         </g>

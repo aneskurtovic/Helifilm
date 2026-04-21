@@ -63,21 +63,6 @@ export default function Equipment() {
         })}
       </div>
 
-      <div className="section-frame pad-x mt-20">
-        <div
-          className="relative w-full bg-bg-3 overflow-hidden"
-          style={{
-            aspectRatio: "21/9",
-            backgroundImage:
-              "linear-gradient(135deg, rgba(212,164,24,0.1) 0%, rgba(10,10,12,0.6) 100%)",
-          }}
-        >
-          <div className="absolute inset-0 flex items-end justify-between pad-x py-6 mono text-[10px] tracking-[0.2em] uppercase text-fg-mute">
-            <span>Fig. 02</span>
-            <span>STUDIO · GEAR · WALL · SARAJEVO</span>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }

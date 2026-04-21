@@ -18,14 +18,28 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("helifilm-lang") as Language;
-    if (saved && (saved === "en" || saved === "bs")) {
+    if (saved === "en" || saved === "bs") {
       setLanguageState(saved);
-    } else {
-      const browserLang = navigator.language?.toLowerCase() || "";
-      if (browserLang.startsWith("bs") || browserLang.startsWith("hr") || browserLang.startsWith("sr")) {
+      return;
+    }
+
+    const BALKAN_COUNTRIES = new Set(["BA", "RS", "ME", "HR"]);
+
+    const applyBrowserFallback = () => {
+      const lang = navigator.language?.toLowerCase() || "";
+      if (lang.startsWith("bs") || lang.startsWith("hr") || lang.startsWith("sr")) {
         setLanguageState("bs");
       }
-    }
+    };
+
+    fetch("https://ipapi.co/country/", { signal: AbortSignal.timeout(3000) })
+      .then((r) => r.text())
+      .then((country) => {
+        if (BALKAN_COUNTRIES.has(country.trim())) {
+          setLanguageState("bs");
+        }
+      })
+      .catch(applyBrowserFallback);
   }, []);
 
   useEffect(() => {

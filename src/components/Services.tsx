@@ -1,8 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { SectionHeader } from "./ui/SectionHeader";
+
+const capabilityImages: Record<number, string> = {
+  0: "/images/Capabilities/aerial-cinematography.webp",
+  1: "/images/Capabilities/tourism-destination.webp",
+  2: "/images/Capabilities/real-estate-property.webp",
+  3: "/images/Capabilities/commercial-brand.webp",
+  4: "/images/Capabilities/event-coverage.webp",
+  5: "/images/Capabilities/post-production.webp",
+};
 
 export default function Services() {
   const { t } = useLanguage();
@@ -34,12 +44,27 @@ export default function Services() {
             className="group flex flex-col border-t border-line hover:border-accent transition-colors pt-5"
           >
             <div
-              className="relative aspect-[4/3] mb-6 bg-bg-3 overflow-hidden transition-transform duration-500 group-hover:-translate-y-1"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, rgba(212,164,24,0.08) 0%, rgba(255,255,255,0.02) 100%)",
-              }}
+              className="relative aspect-[3/2] mb-6 bg-bg-3 overflow-hidden transition-transform duration-500 group-hover:-translate-y-1"
+              style={
+                !capabilityImages[i]
+                  ? {
+                      backgroundImage:
+                        "linear-gradient(135deg, rgba(212,164,24,0.08) 0%, rgba(255,255,255,0.02) 100%)",
+                    }
+                  : undefined
+              }
             >
+              {capabilityImages[i] ? (
+                <Image
+                  src={capabilityImages[i]}
+                  alt={s.t}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none select-none"
+                  draggable={false}
+                  priority={i < 2}
+                />
+              ) : null}
               <div className="absolute inset-0 flex items-end justify-between pad-x py-4 mono text-[9px] tracking-[0.2em] uppercase text-fg-mute">
                 <span>Fig. {s.n}</span>
                 <span>{s.label}</span>

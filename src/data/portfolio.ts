@@ -35,7 +35,7 @@ export const portfolioItems: PortfolioItem[] = [
     client: "USK Turizam",
     year: 2024,
     role: "Aerial production & post",
-    ratio: "tall",
+    ratio: "wide",
     label: "01 · UNA · GOLDEN HOUR",
     featured: true,
   },
@@ -116,7 +116,7 @@ export const portfolioItems: PortfolioItem[] = [
     client: "Self-produced",
     year: 2021,
     role: "Aerial cinematography",
-    ratio: "tall",
+    ratio: "std",
     label: "07 · EXPLORE · NATURE",
   },
   {

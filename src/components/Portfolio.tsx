@@ -57,13 +57,12 @@ export default function Portfolio() {
   }));
 
   const ratioClass = (r: string | undefined) => {
-    if (r === "tall") return "md:col-span-6 lg:col-span-5 lg:row-span-2";
-    if (r === "wide") return "md:col-span-12 lg:col-span-7";
+    if (r === "wide") return "md:col-span-12";
     return "md:col-span-6";
   };
 
   const ratioAspect = (r: string | undefined) => {
-    if (r === "tall") return "aspect-[4/5]";
+    if (r === "wide") return "aspect-[21/9]";
     return "aspect-[16/10]";
   };
 
@@ -112,7 +111,7 @@ export default function Portfolio() {
             className={`group relative flex flex-col gap-4 text-left hover:-translate-y-1 transition-transform duration-500 ${ratioClass(item.ratio)}`}
             aria-label={`Play ${item.title}`}
           >
-            <div className={`relative overflow-hidden ${ratioAspect(item.ratio)} ${item.ratio === "tall" ? "h-full" : ""} bg-bg-3`}>
+            <div className={`relative overflow-hidden ${ratioAspect(item.ratio)} bg-bg-3`}>
               <PortfolioThumb youtubeId={item.youtubeId} title={item.title} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
