@@ -5,13 +5,15 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { SectionHeader } from "./ui/SectionHeader";
 
+const bp = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 const capabilityImages: Record<number, string> = {
-  0: "/images/Capabilities/aerial-cinematography.webp",
-  1: "/images/Capabilities/tourism-destination.webp",
-  2: "/images/Capabilities/real-estate-property.webp",
-  3: "/images/Capabilities/commercial-brand.webp",
-  4: "/images/Capabilities/event-coverage.webp",
-  5: "/images/Capabilities/post-production.webp",
+  0: `${bp}/images/Capabilities/aerial-cinematography.webp`,
+  1: `${bp}/images/Capabilities/tourism-destination.webp`,
+  2: `${bp}/images/Capabilities/real-estate-property.webp`,
+  3: `${bp}/images/Capabilities/commercial-brand.webp`,
+  4: `${bp}/images/Capabilities/event-coverage.webp`,
+  5: `${bp}/images/Capabilities/post-production.webp`,
 };
 
 export default function Services() {

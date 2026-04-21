@@ -25,8 +25,12 @@ export default function Navbar() {
 
   const go = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    setOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    if (open) {
+      setOpen(false);
+      setTimeout(() => document.querySelector(href)?.scrollIntoView({ behavior: "smooth" }), 320);
+    } else {
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const labels: Record<string, string> = {
@@ -51,7 +55,7 @@ export default function Navbar() {
       >
         Skip to content
       </a>
-      <div className="section-frame grid grid-cols-[auto_1fr_auto] items-center gap-10 pad-x">
+      <div className="section-frame flex items-center justify-between pad-x lg:grid lg:grid-cols-[auto_1fr_auto] lg:gap-10">
         <a
           href="#home"
           onClick={(e) => go(e, "#home")}
@@ -136,7 +140,7 @@ export default function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="lg:hidden overflow-hidden bg-bg-2 border-t border-line"
           >
-            <div className="flex flex-col gap-3 pad-x py-5">
+            <div className="flex flex-col items-end gap-3 pad-x py-5">
               {items.map((it) => (
                 <a
                   key={it.key}
@@ -150,11 +154,11 @@ export default function Navbar() {
               <a
                 href="#contact"
                 onClick={(e) => go(e, "#contact")}
-                className="mt-2 inline-flex items-center justify-center gap-2 rounded-full border border-line-2 px-4 py-3 text-[11px] uppercase tracking-[0.14em]"
+                className="mt-2 inline-flex items-center gap-2 rounded-full border border-line-2 px-4 py-3 text-[11px] uppercase tracking-[0.14em]"
               >
                 {t.nav.startProject} →
               </a>
-              <div className="flex items-center gap-1 pt-3 mono text-[11px] tracking-[0.2em] text-fg-dim">
+              <div className="flex items-center gap-1 pt-1 mono text-[11px] tracking-[0.2em] text-fg-dim">
                 <button
                   onClick={() => setLanguage("en")}
                   className={`px-3 py-3 min-h-[44px] ${language === "en" ? "text-accent" : ""}`}
