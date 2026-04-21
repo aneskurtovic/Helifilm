@@ -79,26 +79,6 @@ export default function About() {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative overflow-hidden bg-bg-3"
-          style={{ aspectRatio: "16/10" }}
-        >
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "linear-gradient(135deg, rgba(212,164,24,0.08) 0%, rgba(30,58,138,0.1) 100%)",
-            }}
-          />
-          <div className="absolute inset-0 flex items-end justify-between pad-x py-4 mono text-[10px] tracking-[0.2em] uppercase text-fg-mute">
-            <span>Fig. 03</span>
-            <span>FLIGHT · DINARIC · SUNSET</span>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

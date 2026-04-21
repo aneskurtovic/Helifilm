@@ -42,7 +42,7 @@ export default function TrustStrip() {
       <div className="section-frame mt-12 pad-x pt-10 border-t border-line">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {t.trust.stats.map((s, i) => (
-            <div key={i} className="flex flex-col gap-2">
+            <div key={i} className="flex flex-col items-center gap-2 text-center">
               <span
                 className="display text-fg"
                 style={{ fontSize: "clamp(48px, 6vw, 72px)", lineHeight: 1, letterSpacing: "-0.04em" }}

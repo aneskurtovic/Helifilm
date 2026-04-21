@@ -98,26 +98,18 @@ export default function Hero() {
       </motion.div>
 
       {/* Bottom rail */}
-      <div className="hidden md:flex absolute bottom-10 left-0 right-0 justify-between items-end pad-x z-10">
-        <div className="flex items-center gap-3.5 mono text-[10px] tracking-[0.2em] text-fg-dim">
-          <span>{t.hero.telemetry.scroll}</span>
-          <span className="relative block w-16 h-px bg-fg-dim overflow-hidden">
-            <span className="absolute inset-0 bg-accent scroll-sweep" />
-          </span>
+      <div className="hidden md:flex absolute bottom-10 left-0 right-0 justify-between pad-x z-10 mono text-[10px]">
+        <div>
+          <span className="text-fg-mute tracking-[0.14em] mr-1.5">{t.hero.meta.shootLabel}</span>
+          <span className="text-fg-dim tracking-[0.08em]">{t.hero.meta.shootValue}</span>
         </div>
-        <div className="grid grid-cols-3 gap-8 mono text-[10px]">
-          <div>
-            <span className="text-fg-mute tracking-[0.14em] mr-1.5">{t.hero.meta.shootLabel}</span>
-            <span className="text-fg-dim tracking-[0.08em]">{t.hero.meta.shootValue}</span>
-          </div>
-          <div>
-            <span className="text-fg-mute tracking-[0.14em] mr-1.5">{t.hero.meta.crewLabel}</span>
-            <span className="text-fg-dim tracking-[0.08em]">{t.hero.meta.crewValue}</span>
-          </div>
-          <div>
-            <span className="text-fg-mute tracking-[0.14em] mr-1.5">{t.hero.meta.formatLabel}</span>
-            <span className="text-fg-dim tracking-[0.08em]">{t.hero.meta.formatValue}</span>
-          </div>
+        <div>
+          <span className="text-fg-mute tracking-[0.14em] mr-1.5">{t.hero.meta.crewLabel}</span>
+          <span className="text-fg-dim tracking-[0.08em]">{t.hero.meta.crewValue}</span>
+        </div>
+        <div>
+          <span className="text-fg-mute tracking-[0.14em] mr-1.5">{t.hero.meta.formatLabel}</span>
+          <span className="text-fg-dim tracking-[0.08em]">{t.hero.meta.formatValue}</span>
         </div>
       </div>
     </section>

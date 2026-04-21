@@ -33,7 +33,15 @@
       "WebFetch(domain:www.dji.com)",
       "Bash(npm run:*)",
       "mcp__plugin_playwright_playwright__browser_navigate",
-      "mcp__plugin_playwright_playwright__browser_install"
+      "mcp__plugin_playwright_playwright__browser_install",
+      "Read(//c/Users/anesk/.claude/plugins/marketplaces/ui-ux-pro-max-skill/**)",
+      "Bash(python skills/ui-ux-pro-max/scripts/search.py \"drone cinematography aerial portfolio premium dark editorial\" --design-system -f markdown)",
+      "Bash(python assets/scripts/search.py \"drone cinematography aerial portfolio premium dark editorial\" --design-system -f markdown)",
+      "Bash(python assets/scripts/search.py \"animation accessibility loading touch-targets\" --domain ux -n 15)",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_close",
+      "Bash(file \"C:/Users/anesk/source/repos/Helifilm/public/images/Capabilities/\"*)",
+      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run build)"
     ]
   }
 }
