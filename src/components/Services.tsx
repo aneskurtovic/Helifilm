@@ -57,17 +57,24 @@ export default function Services() {
               }
             >
               {capabilityImages[i] ? (
-                <Image
-                  src={capabilityImages[i]}
-                  alt={s.t}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none select-none"
-                  draggable={false}
-                  priority={i < 2}
-                />
+                <>
+                  <Image
+                    src={capabilityImages[i]}
+                    alt={s.t}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none select-none"
+                    draggable={false}
+                    priority={i < 2}
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/75 via-black/35 to-transparent pointer-events-none" />
+                </>
               ) : null}
-              <div className="absolute inset-0 flex items-end justify-between pad-x py-4 mono text-[9px] tracking-[0.2em] uppercase text-fg-mute">
+              <div
+                className={`absolute inset-0 flex items-end justify-between pad-x py-4 mono text-[9px] tracking-[0.2em] uppercase ${
+                  capabilityImages[i] ? "text-white/85" : "text-fg-mute"
+                }`}
+              >
                 <span>Fig. {s.n}</span>
                 <span>{s.label}</span>
               </div>

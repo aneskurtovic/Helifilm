@@ -59,13 +59,13 @@ export default function Contact() {
     <section
       id="contact"
       className="relative"
-      style={{ background: "var(--accent)", color: "#0a0a0c", padding: "120px 0" }}
+      style={{ background: "#111827", color: "var(--fg)", padding: "120px 0" }}
     >
       <div className="section-frame pad-x grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
         {/* LEFT */}
         <div>
-          <div className="inline-flex items-center gap-2.5 mono text-[11px] tracking-[0.18em] uppercase mb-5" style={{ color: "rgba(10,10,12,0.6)" }}>
-            <span className="w-2 h-2 rounded-full bg-bg" />
+          <div className="inline-flex items-center gap-2.5 mono text-[11px] tracking-[0.18em] uppercase mb-5" style={{ color: "rgba(244,241,234,0.55)" }}>
+            <span className="w-2 h-2 rounded-full bg-accent" />
             {t.contact.eyebrow}
           </div>
           <h2
@@ -74,18 +74,18 @@ export default function Contact() {
               fontSize: "clamp(48px, 6vw, 96px)",
               lineHeight: 0.95,
               letterSpacing: "-0.03em",
-              color: "#0a0a0c",
+              color: "var(--fg)",
               margin: "16px 0 24px",
             }}
           >
             {t.contact.title}
             <br />
-            <em className="italic">{t.contact.titleEm}</em>
+            <em className="italic text-accent">{t.contact.titleEm}</em>
             {t.contact.titleRest ? ` ${t.contact.titleRest}` : ""}
           </h2>
           <p
             className="text-[17px] max-w-[440px] mb-12"
-            style={{ color: "rgba(10,10,12,0.7)" }}
+            style={{ color: "rgba(244,241,234,0.65)" }}
           >
             {t.contact.subtitle}
           </p>
@@ -93,48 +93,48 @@ export default function Contact() {
           <div
             className="grid grid-cols-1 sm:grid-cols-3 gap-6 py-6 mb-8"
             style={{
-              borderTop: "1px solid rgba(10,10,12,0.15)",
-              borderBottom: "1px solid rgba(10,10,12,0.15)",
+              borderTop: "1px solid rgba(244,241,234,0.12)",
+              borderBottom: "1px solid rgba(244,241,234,0.12)",
             }}
           >
             <div className="flex flex-col gap-1">
-              <span className="mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "rgba(10,10,12,0.55)" }}>
+              <span className="mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "rgba(244,241,234,0.5)" }}>
                 {t.contact.info.email}
               </span>
               <a
                 href={`mailto:${contactInfo.email}`}
                 className="display"
-                style={{ fontSize: 20, color: "#0a0a0c" }}
+                style={{ fontSize: 20, color: "var(--fg)" }}
               >
                 {contactInfo.email}
               </a>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "rgba(10,10,12,0.55)" }}>
+              <span className="mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "rgba(244,241,234,0.5)" }}>
                 {t.contact.info.phone}
               </span>
               <a
                 href={`tel:+${contactInfo.phoneRaw}`}
                 className="display"
-                style={{ fontSize: 20, color: "#0a0a0c" }}
+                style={{ fontSize: 20, color: "var(--fg)" }}
               >
                 {contactInfo.phone}
               </a>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "rgba(10,10,12,0.55)" }}>
+              <span className="mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "rgba(244,241,234,0.5)" }}>
                 {t.contact.info.location}
               </span>
-              <span className="display" style={{ fontSize: 20, color: "#0a0a0c" }}>
+              <span className="display" style={{ fontSize: 20, color: "var(--fg)" }}>
                 {contactInfo.locationCityEn}
               </span>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2.5 mono text-[12px] tracking-[0.08em]">
+          <div className="flex flex-col gap-2.5 mono text-[12px] tracking-[0.08em]" style={{ color: "rgba(244,241,234,0.75)" }}>
             {t.contact.assurances.map((a) => (
               <div key={a} className="flex items-center gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-bg" />
+                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                 {a}
               </div>
             ))}
@@ -147,6 +147,7 @@ export default function Contact() {
           style={{
             background: "#0a0a0c",
             color: "#f4f1ea",
+            border: "1px solid rgba(212,164,24,0.15)",
             borderRadius: 2,
             minHeight: 520,
             display: "flex",
