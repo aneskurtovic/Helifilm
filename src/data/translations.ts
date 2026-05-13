@@ -125,7 +125,7 @@ export const translations = {
       ],
     },
     process: {
-      eyebrow: "03 — How we work",
+      eyebrow: "How we work",
       title: "From brief",
       titleEm: "to master",
       titleRest: "in 14 days.",
@@ -380,7 +380,7 @@ export const translations = {
       ],
     },
     process: {
-      eyebrow: "03 — Kako radimo",
+      eyebrow: "Kako radimo",
       title: "Od briefa",
       titleEm: "do mastera",
       titleRest: "za 14 dana.",
