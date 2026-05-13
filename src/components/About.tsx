@@ -11,6 +11,7 @@ export default function About() {
   return (
     <section id="about" className="border-b border-line bg-bg">
       <div className="section-frame pad-x py-[120px]">
+       <div className="max-w-[1180px] mx-auto">
         <div className="grid md:grid-cols-[minmax(0,320px)_1fr] gap-10 md:gap-16 items-start">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -85,6 +86,7 @@ export default function About() {
             </div>
           ))}
         </motion.div>
+       </div>
       </div>
     </section>
   );

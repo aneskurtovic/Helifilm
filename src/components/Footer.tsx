@@ -7,8 +7,8 @@ import { contactInfo } from "@/data/contact";
 const navLinks = [
   { key: "work" as const, href: "#work" },
   { key: "services" as const, href: "#services" },
-  { key: "equipment" as const, href: "#equipment" },
   { key: "about" as const, href: "#about" },
+  { key: "testimonials" as const, href: "#testimonials" },
   { key: "contact" as const, href: "#contact" },
 ];
 

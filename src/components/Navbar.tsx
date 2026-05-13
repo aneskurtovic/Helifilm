@@ -8,7 +8,7 @@ const items = [
   { key: "work", href: "#work", label: "Work" },
   { key: "services", href: "#services", label: "Services" },
   { key: "about", href: "#about", label: "Studio" },
-  { key: "equipment", href: "#equipment", label: "Equipment" },
+  { key: "testimonials", href: "#testimonials", label: "Testimonials" },
   { key: "contact", href: "#contact", label: "Contact" },
 ] as const;
 
@@ -37,7 +37,7 @@ export default function Navbar() {
     work: t.nav.work,
     services: t.nav.services,
     about: t.nav.about,
-    equipment: t.nav.equipment,
+    testimonials: t.nav.testimonials,
     contact: t.nav.contact,
   };
 

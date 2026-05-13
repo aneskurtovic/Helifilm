@@ -5,7 +5,7 @@ export const translations = {
       work: "Work",
       services: "Services",
       about: "Studio",
-      equipment: "Equipment",
+      testimonials: "Testimonials",
       contact: "Contact",
       booking: "Now booking",
       startProject: "Start a project",
@@ -73,7 +73,7 @@ export const translations = {
       ],
     },
     services: {
-      eyebrow: "02 — Capabilities",
+      eyebrow: "02 — Services",
       title: "Six things we do",
       titleEm: "all the way",
       titleRest: "through.",
@@ -125,7 +125,7 @@ export const translations = {
       ],
     },
     process: {
-      eyebrow: "04 — How we work",
+      eyebrow: "03 — How we work",
       title: "From brief",
       titleEm: "to master",
       titleRest: "in 14 days.",
@@ -140,7 +140,7 @@ export const translations = {
       ],
     },
     portfolio: {
-      eyebrow: "03 — Selected work",
+      eyebrow: "01 — Selected work",
       title: "Twelve years",
       titleEm: "of altitude.",
       titleRest: "",
@@ -161,7 +161,7 @@ export const translations = {
       },
     },
     equipment: {
-      eyebrow: "05 — The kit",
+      eyebrow: "The kit",
       title: "Built",
       titleEm: "to fly anything.",
       titleRest: "",
@@ -176,7 +176,7 @@ export const translations = {
       },
     },
     testimonials: {
-      eyebrow: "06 — On the record",
+      eyebrow: "04 — On the record",
       title: "In their words.",
     },
     faq: {
@@ -184,7 +184,7 @@ export const translations = {
       title: "Common questions.",
     },
     contact: {
-      eyebrow: "07 — Start a project",
+      eyebrow: "05 — Start a project",
       title: "Tell us",
       titleEm: "what you're flying for.",
       titleRest: "",
@@ -260,7 +260,7 @@ export const translations = {
       work: "Radovi",
       services: "Usluge",
       about: "Studio",
-      equipment: "Oprema",
+      testimonials: "Preporuke",
       contact: "Kontakt",
       booking: "Prihvatamo projekte",
       startProject: "Zatraži ponudu",
@@ -380,7 +380,7 @@ export const translations = {
       ],
     },
     process: {
-      eyebrow: "04 — Kako radimo",
+      eyebrow: "03 — Kako radimo",
       title: "Od briefa",
       titleEm: "do mastera",
       titleRest: "za 14 dana.",
@@ -395,7 +395,7 @@ export const translations = {
       ],
     },
     portfolio: {
-      eyebrow: "03 — Odabrani radovi",
+      eyebrow: "01 — Odabrani radovi",
       title: "Dvanaest godina",
       titleEm: "visine.",
       titleRest: "",
@@ -416,7 +416,7 @@ export const translations = {
       },
     },
     equipment: {
-      eyebrow: "05 — Oprema",
+      eyebrow: "Oprema",
       title: "Spremni",
       titleEm: "za sve.",
       titleRest: "",
@@ -431,7 +431,7 @@ export const translations = {
       },
     },
     testimonials: {
-      eyebrow: "06 — Recenzije",
+      eyebrow: "04 — Recenzije",
       title: "Njihovim riječima.",
     },
     faq: {
@@ -439,7 +439,7 @@ export const translations = {
       title: "Česta pitanja.",
     },
     contact: {
-      eyebrow: "07 — Zatraži ponudu",
+      eyebrow: "05 — Zatraži ponudu",
       title: "Recite nam",
       titleEm: "šta letite.",
       titleRest: "",
