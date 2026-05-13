@@ -14,8 +14,8 @@ const mapping = [
   { src: "06-PostProduction.jpg", out: "post-production.webp" },
 ];
 
-const TARGET_W = 1600;
-const TARGET_H = 1067;
+const TARGET_W = 1200;
+const TARGET_H = 800;
 
 (async () => {
   for (const { src, out } of mapping) {
@@ -25,7 +25,7 @@ const TARGET_H = 1067;
     await sharp(srcPath)
       .rotate()
       .resize(TARGET_W, TARGET_H, { fit: "cover", position: "attention", withoutEnlargement: true })
-      .webp({ quality: 82, effort: 6 })
+      .webp({ quality: 85, effort: 6 })
       .toFile(outPath);
     const outMeta = await sharp(outPath).metadata();
     const stat = fs.statSync(outPath);

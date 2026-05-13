@@ -82,6 +82,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://img.youtube.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.youtube.com" crossOrigin="anonymous" />
+      </head>
       <body className={`${interTight.variable} ${instrumentSerif.variable} ${jetBrainsMono.variable} font-sans antialiased bg-[#0a0a0c] text-white`}>
         <LanguageProvider>{children}</LanguageProvider>
       </body>
