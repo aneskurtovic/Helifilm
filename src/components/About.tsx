@@ -10,13 +10,13 @@ export default function About() {
 
   return (
     <section id="about" className="border-b border-line bg-bg">
-      <div className="section-frame pad-x py-[120px] grid md:grid-cols-2 gap-8">
+      <div className="section-frame pad-x py-[120px] grid md:grid-cols-[minmax(0,320px)_1fr] gap-10 md:gap-16 items-start">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative row-span-2 w-full overflow-hidden bg-bg-3"
+          className="relative w-full max-w-[260px] md:max-w-none mx-auto md:mx-0 overflow-hidden bg-bg-3"
           style={{ aspectRatio: "3/4" }}
         >
           <Image
