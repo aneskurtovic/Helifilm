@@ -157,10 +157,10 @@ export default function Portfolio() {
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-5xl aspect-video overflow-hidden"
+              className="w-full max-w-[min(95vw,1600px)] max-h-[90vh] aspect-video overflow-hidden"
             >
               <iframe
-                src={`https://www.youtube.com/embed/${lightbox.id}?autoplay=1&vq=hd1080&rel=0`}
+                src={`https://www.youtube.com/embed/${lightbox.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
                 title={`Play: ${lightbox.title}`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
