@@ -60,7 +60,6 @@ export default function Navbar() {
           href="#home"
           onClick={(e) => go(e, "#home")}
           className="flex items-center gap-2.5"
-          aria-label="Helifilm"
         >
           <span className="w-2 h-2 rounded-full bg-accent" />
           <span className="mono text-[11px] font-semibold tracking-[0.32em] text-fg">

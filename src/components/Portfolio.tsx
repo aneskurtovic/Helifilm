@@ -33,7 +33,13 @@ function PortfolioThumb({
   title: string;
   eager: boolean;
 }) {
-  const [src, setSrc] = useState(getYoutubeThumbnail(youtubeId));
+  // Hero uses maxres for sharpness at full width; grid slots use hqdefault
+  // (480x360, ~25KB) since they render at <=400px on screen anyway. Cuts ~1.3MB
+  // of image weight across the visible mosaic.
+  const initial = eager
+    ? getYoutubeThumbnail(youtubeId)
+    : getYoutubeFallbackThumbnail(youtubeId);
+  const [src, setSrc] = useState(initial);
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img

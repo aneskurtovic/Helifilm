@@ -162,7 +162,7 @@ export default function Contact() {
               <div
                 key={n}
                 className="flex items-center gap-2.5"
-                style={{ opacity: step >= n ? 1 : 0.4, transition: "opacity .3s" }}
+                style={{ opacity: step >= n ? 1 : 0.7, transition: "opacity .3s" }}
               >
                 <span
                   className="inline-flex items-center justify-center w-7 h-7 rounded-full mono text-[11px]"
@@ -174,7 +174,7 @@ export default function Contact() {
                 >
                   0{n}
                 </span>
-                <span className="mono text-[11px] tracking-[0.12em] uppercase" style={{ color: "rgba(255,255,255,0.6)" }}>
+                <span className="mono text-[11px] tracking-[0.12em] uppercase" style={{ color: "rgba(255,255,255,0.75)" }}>
                   {labels[n - 1]}
                 </span>
               </div>
@@ -190,7 +190,7 @@ export default function Contact() {
           >
             {step === 1 && (
               <>
-                <label className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
+                <label className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.75)" }}>
                   01 · {t.contact.form.projectType}
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -198,7 +198,7 @@ export default function Contact() {
                     <Chip key={s} label={s} active={data.service === s} onClick={() => set("service", s)} />
                   ))}
                 </div>
-                <label htmlFor="contact-brief" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3 mt-8" style={{ color: "rgba(255,255,255,0.55)" }}>
+                <label htmlFor="contact-brief" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3 mt-8" style={{ color: "rgba(255,255,255,0.75)" }}>
                   {t.contact.form.message}
                 </label>
                 <textarea
@@ -219,7 +219,7 @@ export default function Contact() {
 
             {step === 2 && (
               <>
-                <label className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
+                <label className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.75)" }}>
                   02 · {t.contact.form.budget}
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -227,7 +227,7 @@ export default function Contact() {
                     <Chip key={b} label={b} active={data.budget === b} onClick={() => set("budget", b)} />
                   ))}
                 </div>
-                <label className="mono text-[11px] tracking-[0.12em] uppercase block mb-3 mt-8" style={{ color: "rgba(255,255,255,0.55)" }}>
+                <label className="mono text-[11px] tracking-[0.12em] uppercase block mb-3 mt-8" style={{ color: "rgba(255,255,255,0.75)" }}>
                   {t.contact.form.location}
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -251,7 +251,7 @@ export default function Contact() {
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="contact-name" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
+                    <label htmlFor="contact-name" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.75)" }}>
                       {t.contact.form.name}
                     </label>
                     <input
@@ -264,7 +264,7 @@ export default function Contact() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="contact-company" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
+                    <label htmlFor="contact-company" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3" style={{ color: "rgba(255,255,255,0.75)" }}>
                       {t.contact.form.company}
                     </label>
                     <input
@@ -277,7 +277,7 @@ export default function Contact() {
                     />
                   </div>
                 </div>
-                <label htmlFor="contact-email" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3 mt-6" style={{ color: "rgba(255,255,255,0.55)" }}>
+                <label htmlFor="contact-email" className="mono text-[11px] tracking-[0.12em] uppercase block mb-3 mt-6" style={{ color: "rgba(255,255,255,0.75)" }}>
                   {t.contact.form.email}
                 </label>
                 <input
